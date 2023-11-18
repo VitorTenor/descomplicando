@@ -1,9 +1,7 @@
 package com.vitortenorio.descomplicando.util;
 
-import com.vitortenorio.descomplicando.enumerator.NodeField;
-import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vitortenorio.descomplicando.enumerator.NodeField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

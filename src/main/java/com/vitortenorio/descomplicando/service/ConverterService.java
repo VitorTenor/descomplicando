@@ -1,6 +1,5 @@
 package com.vitortenorio.descomplicando.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.factory.QuestionFactory;
