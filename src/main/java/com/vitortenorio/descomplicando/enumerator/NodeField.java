@@ -4,14 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum NodeField {
+    DATA("data"),
     BODY("body"),
     NODES("nodes"),
-    TEXT_BY_TEXT_ID("textByTextId"),
-    CONTENTS_BY_QUESTION_ID("contentsByQuestionId"),
-    CONTENTS_BY_ASSERTION_ID("contentsByAssertionId"),
-    DATA("data"),
     LIST_BY_SLUG("listBySlug"),
-    LIST_ITEMS_BY_LIST_ID("listItemsByListId");
+    TEXT_BY_TEXT_ID("textByTextId"),
+    LIST_ITEMS_BY_LIST_ID("listItemsByListId"),
+    CONTENTS_BY_QUESTION_ID("contentsByQuestionId"),
+    CONTENTS_BY_ASSERTION_ID("contentsByAssertionId");
 
     private final String field;
 
