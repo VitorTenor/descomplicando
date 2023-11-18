@@ -1,5 +1,7 @@
 package com.vitortenorio.descomplicando.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.factory.QuestionFactory;
 import com.vitortenorio.descomplicando.model.request.Assert;
@@ -7,9 +9,7 @@ import com.vitortenorio.descomplicando.model.request.QuestionAssert;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
 import com.vitortenorio.descomplicando.util.Base64Util;
 import com.vitortenorio.descomplicando.util.JsonNodeUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vitortenorio.descomplicando.util.ObjectMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConverterService {
-    private final ObjectMapper objectMapper;
+    private final ObjectMapperUtil objectMapperUtil;
     private final JsonNodeUtil jsonNodeUtil;
     private final QuestionFactory questionFactory;
 
@@ -33,13 +33,9 @@ public class ConverterService {
     }
 
     public List<AnswerResponse> processNodes(String json, Integer startIndex, String jsonAssert) {
-        try {
-            Assert assertObject = objectMapper.readValue(jsonAssert, Assert.class);
-            List<Integer> filterTrue = filterTrue(assertObject);
-            return processNodes(json, startIndex, filterTrue);
-        } catch (JsonProcessingException e) {
-            throw new BusinessException(e.getMessage());
-        }
+        Assert assertObject = objectMapperUtil.readValue(jsonAssert, Assert.class);
+        List<Integer> filterTrue = filterTrue(assertObject);
+        return processNodes(json, startIndex, filterTrue);
     }
 
     public List<AnswerResponse> processNodes(String json, Integer startIndex, List<Integer> answerIds) {

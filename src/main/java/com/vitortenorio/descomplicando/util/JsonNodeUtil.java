@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JsonNodeUtil {
-    private final ObjectMapper objectMapper;
+    private final ObjectMapperUtil objectMapperUtil;
 
     public JsonNode getQuestion(JsonNode jsonNode) {
         return jsonNode.path(NodeField.CONTENTS_BY_QUESTION_ID.getField())
@@ -30,17 +30,13 @@ public class JsonNodeUtil {
     }
 
     public JsonNode buildMainNode(String json) {
-        try {
-            JsonNode rootNode = objectMapper.readTree(json);
+        JsonNode rootNode = objectMapperUtil.readTree(json);
 
-            return rootNode.path(NodeField.DATA.getField())
-                    .path(NodeField.LIST_BY_SLUG.getField())
-                    .path(NodeField.LIST_ITEMS_BY_LIST_ID.getField())
-                    .path(NodeField.NODES.getField());
+        return rootNode.path(NodeField.DATA.getField())
+                .path(NodeField.LIST_BY_SLUG.getField())
+                .path(NodeField.LIST_ITEMS_BY_LIST_ID.getField())
+                .path(NodeField.NODES.getField());
 
-        } catch (Exception e) {
-            throw new BusinessException(e.getMessage());
-        }
     }
 
     public List<JsonNode> createListFromSingleNode(JsonNode nodes) {
