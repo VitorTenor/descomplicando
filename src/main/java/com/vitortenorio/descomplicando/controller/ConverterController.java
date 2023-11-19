@@ -26,20 +26,18 @@ public class ConverterController {
 
     @PostMapping("/findQuestionsByJson")
     public List<AnswerResponse> findQuestionsByJson(@RequestBody String questionJson,
-                                                    @RequestParam(value = "startIndex") Integer startIndex,
                                                     @RequestParam(value = "assertions") String answerJson) {
 
         LOGGER.info("Finding questions by json");
-        return converterService.processQuestionByAnswer(questionJson, startIndex, answerJson);
+        return converterService.processQuestionByAnswer(questionJson, answerJson);
     }
 
     @PostMapping("/findQuestionsByIds")
     public List<AnswerResponse> findQuestionsByIds(@RequestBody String questionJson,
-                                                   @RequestParam(value = "startIndex") Integer startIndex,
                                                    @RequestParam(value = "assertions") List<Integer> answerIds) {
 
         LOGGER.info("Finding questions by ids");
-        return converterService.processQuestionByAnswer(questionJson, startIndex, answerIds);
+        return converterService.processQuestionByAnswer(questionJson, answerIds);
     }
 
 }

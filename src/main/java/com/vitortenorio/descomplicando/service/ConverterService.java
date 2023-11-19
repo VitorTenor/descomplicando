@@ -36,7 +36,7 @@ public class ConverterService {
                 .toList();
     }
 
-    public List<AnswerResponse> processQuestionByAnswer(String question, Integer startIndex, String answerJson) {
+    public List<AnswerResponse> processQuestionByAnswer(String question, String answerJson) {
         LOGGER.info("Processing nodes with filterTrue");
 
         Answer answer = objectMapperUtil.readValue(answerJson, Answer.class);
@@ -45,21 +45,20 @@ public class ConverterService {
         LOGGER.info("FilterTrue processed");
 
         LOGGER.info("Processing nodes by filter ids");
-        return processQuestionByAnswer(question, startIndex, answerIds);
+        return processQuestionByAnswer(question, answerIds);
     }
 
-    public List<AnswerResponse> processQuestionByAnswer(String question, Integer startIndex, List<Integer> answerIds) {
+    public List<AnswerResponse> processQuestionByAnswer(String question, List<Integer> answerIds) {
         LOGGER.info("Processing nodes");
         JsonNode nodes = jsonNodeUtil.buildMainNode(question);
 
         if (nodes.isArray()) {
             LOGGER.info("Json is an array");
-            List<JsonNode> nodesList = jsonNodeUtil.createListFromSingleNode(nodes);
-            List<JsonNode> filterList = nodesList.subList(startIndex, Math.min(startIndex + 10, nodesList.size()));
+            List<JsonNode> questionList = jsonNodeUtil.createListFromSingleNode(nodes);
 
             LOGGER.info("Finding and building questions");
             List<AnswerResponse> answerResponseList = new ArrayList<>();
-            questionFactory.findAndBuildQuestion(answerIds, filterList, answerResponseList);
+            questionFactory.findAndBuildQuestion(answerIds, questionList, answerResponseList);
 
             LOGGER.info("Questions found and built");
             return answerResponseList;
