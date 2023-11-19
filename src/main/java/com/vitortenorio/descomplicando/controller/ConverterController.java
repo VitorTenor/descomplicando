@@ -40,4 +40,12 @@ public class ConverterController {
         return converterService.processQuestionByAnswer(questionJson, answerIds);
     }
 
+    @PostMapping("/findQuestionsArray")
+    public List<AnswerResponse> findQuestionsByIdsAndJson(@RequestBody String questionJson,
+                                                          @RequestParam(value = "assertions") List<Integer> answerIds) {
+
+        LOGGER.info("Finding questions by ids and json");
+        return converterService.processQuestionArray(questionJson, answerIds);
+    }
+
 }
