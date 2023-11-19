@@ -2,9 +2,9 @@ package com.vitortenorio.descomplicando.model.request;
 
 import java.util.List;
 
-public record Assert(
+public record Answer(
         String message,
         String identifier,
-        List<QuestionAssert> data
+        List<QuestionAnswer> data
 ) {
 }

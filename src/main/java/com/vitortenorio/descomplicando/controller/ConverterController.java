@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.controller;
 
-import com.vitortenorio.descomplicando.model.request.Assert;
+import com.vitortenorio.descomplicando.model.request.Answer;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
 import com.vitortenorio.descomplicando.service.ConverterService;
 import lombok.RequiredArgsConstructor;
@@ -19,27 +19,27 @@ public class ConverterController {
     private final Logger LOGGER = Logger.getLogger(ConverterController.class.getName());
 
     @PostMapping(value = "/filterTrue", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Integer> filterTrue(@RequestBody Assert assertt) {
+    public List<Integer> filterTrue(@RequestBody Answer assertt) {
         LOGGER.info("Filtering true assertions");
         return converterService.filterTrue(assertt);
     }
 
     @PostMapping("/findQuestionsByJson")
-    public List<AnswerResponse> findQuestionsByJson(@RequestBody String json,
+    public List<AnswerResponse> findQuestionsByJson(@RequestBody String questionJson,
                                                     @RequestParam(value = "startIndex") Integer startIndex,
-                                                    @RequestParam(value = "assertions") String jsonAssert) {
+                                                    @RequestParam(value = "assertions") String answerJson) {
 
         LOGGER.info("Finding questions by json");
-        return converterService.processNodes(json, startIndex, jsonAssert);
+        return converterService.processQuestionByAnswer(questionJson, startIndex, answerJson);
     }
 
     @PostMapping("/findQuestionsByIds")
-    public List<AnswerResponse> findQuestionsByIds(@RequestBody String json,
+    public List<AnswerResponse> findQuestionsByIds(@RequestBody String questionJson,
                                                    @RequestParam(value = "startIndex") Integer startIndex,
-                                                   @RequestParam(value = "assertions") List<Integer> filterTrue) {
+                                                   @RequestParam(value = "assertions") List<Integer> answerIds) {
 
         LOGGER.info("Finding questions by ids");
-        return converterService.processNodes(json, startIndex, filterTrue);
+        return converterService.processQuestionByAnswer(questionJson, startIndex, answerIds);
     }
 
 }

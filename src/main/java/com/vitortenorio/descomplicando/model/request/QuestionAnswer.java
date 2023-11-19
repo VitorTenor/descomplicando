@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.model.request;
 
-public record QuestionAssert (
+public record QuestionAnswer(
         String id,
         Boolean correct
 ) {

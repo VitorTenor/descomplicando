@@ -3,7 +3,6 @@ package com.vitortenorio.descomplicando.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitortenorio.descomplicando.exception.BusinessException;
-import com.vitortenorio.descomplicando.model.request.Assert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

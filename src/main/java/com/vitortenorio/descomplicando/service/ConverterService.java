@@ -3,8 +3,8 @@ package com.vitortenorio.descomplicando.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.factory.QuestionFactory;
-import com.vitortenorio.descomplicando.model.request.Assert;
-import com.vitortenorio.descomplicando.model.request.QuestionAssert;
+import com.vitortenorio.descomplicando.model.request.Answer;
+import com.vitortenorio.descomplicando.model.request.QuestionAnswer;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
 import com.vitortenorio.descomplicando.util.Base64Util;
 import com.vitortenorio.descomplicando.util.JsonNodeUtil;
@@ -24,31 +24,33 @@ public class ConverterService {
     private final ObjectMapperUtil objectMapperUtil;
     private final Logger LOGGER = Logger.getLogger(ConverterService.class.getName());
 
-    public List<Integer> filterTrue(Assert assertt) {
+    public List<Integer> filterTrue(Answer assertt) {
         LOGGER.info("Filtering true assertions");
-        Assert removeIncorrect = removeIncorrect(assertt);
+        Answer removeIncorrect = removeIncorrect(assertt);
         LOGGER.info("Assertions filtered");
 
         LOGGER.info("Converting base64 to integer and reversing it");
         return removeIncorrect.data().stream()
-                .map(QuestionAssert::id)
+                .map(QuestionAnswer::id)
                 .map(Base64Util::convertBase64ToIntegerWithReverse)
                 .toList();
     }
 
-    public List<AnswerResponse> processNodes(String json, Integer startIndex, String jsonAssert) {
+    public List<AnswerResponse> processQuestionByAnswer(String question, Integer startIndex, String answerJson) {
         LOGGER.info("Processing nodes with filterTrue");
-        Assert assertObject = objectMapperUtil.readValue(jsonAssert, Assert.class);
-        List<Integer> filterTrue = filterTrue(assertObject);
+
+        Answer answer = objectMapperUtil.readValue(answerJson, Answer.class);
+
+        List<Integer> answerIds = filterTrue(answer);
         LOGGER.info("FilterTrue processed");
 
         LOGGER.info("Processing nodes by filter ids");
-        return processNodes(json, startIndex, filterTrue);
+        return processQuestionByAnswer(question, startIndex, answerIds);
     }
 
-    public List<AnswerResponse> processNodes(String json, Integer startIndex, List<Integer> answerIds) {
+    public List<AnswerResponse> processQuestionByAnswer(String question, Integer startIndex, List<Integer> answerIds) {
         LOGGER.info("Processing nodes");
-        JsonNode nodes = jsonNodeUtil.buildMainNode(json);
+        JsonNode nodes = jsonNodeUtil.buildMainNode(question);
 
         if (nodes.isArray()) {
             LOGGER.info("Json is an array");
@@ -66,13 +68,13 @@ public class ConverterService {
         throw new BusinessException("Json is not an array");
     }
 
-    private Assert removeIncorrect(Assert assertt) {
+    private Answer removeIncorrect(Answer assertt) {
         LOGGER.info("Removing incorrect assertions");
-        return new Assert(
+        return new Answer(
                 assertt.message(),
                 assertt.identifier(),
                 assertt.data().stream()
-                        .filter(QuestionAssert::correct)
+                        .filter(QuestionAnswer::correct)
                         .toList()
         );
     }
