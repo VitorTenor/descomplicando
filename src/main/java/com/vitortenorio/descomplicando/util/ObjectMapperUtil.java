@@ -24,10 +24,10 @@ public class ObjectMapperUtil {
         }
     }
 
-    public Assert readValue(String jsonAssert, Class<Assert> assertClass) {
+    public <T> T readValue(String json, Class<T> clazz) {
         LOGGER.info("Reading value");
         try {
-            return objectMapper.readValue(jsonAssert, assertClass);
+            return objectMapper.readValue(json, clazz);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new BusinessException(e.getMessage());
