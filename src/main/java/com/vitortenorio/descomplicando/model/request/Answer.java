@@ -5,6 +5,6 @@ import java.util.List;
 public record Answer(
         String message,
         String identifier,
-        List<QuestionAnswer> data
+        List<AnswerDetail> data
 ) {
 }

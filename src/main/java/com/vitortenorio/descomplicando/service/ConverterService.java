@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.factory.QuestionFactory;
 import com.vitortenorio.descomplicando.model.request.Answer;
-import com.vitortenorio.descomplicando.model.request.QuestionAnswer;
+import com.vitortenorio.descomplicando.model.request.AnswerDetail;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
 import com.vitortenorio.descomplicando.util.Base64Util;
 import com.vitortenorio.descomplicando.util.JsonNodeUtil;
@@ -31,7 +31,7 @@ public class ConverterService {
 
         LOGGER.info("Converting base64 to integer and reversing it");
         return removeIncorrect.data().stream()
-                .map(QuestionAnswer::id)
+                .map(AnswerDetail::id)
                 .map(Base64Util::convertBase64ToIntegerWithReverse)
                 .toList();
     }
@@ -74,7 +74,7 @@ public class ConverterService {
                 assertt.message(),
                 assertt.identifier(),
                 assertt.data().stream()
-                        .filter(QuestionAnswer::correct)
+                        .filter(AnswerDetail::correct)
                         .toList()
         );
     }
