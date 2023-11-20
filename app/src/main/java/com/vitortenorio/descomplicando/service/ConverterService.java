@@ -1,13 +1,12 @@
 package com.vitortenorio.descomplicando.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.vitortenorio.descomplicando.enumerator.NodeField;
+import com.vitortenorio.descomplicando.entity.AnswerDetail;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.factory.QuestionFactory;
 import com.vitortenorio.descomplicando.model.request.Answer;
-import com.vitortenorio.descomplicando.model.request.AnswerDetail;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
-import com.vitortenorio.descomplicando.util.Base64Util;
+import com.vitortenorio.descomplicando.core.util.Base64Util;
 import com.vitortenorio.descomplicando.util.JsonNodeUtil;
 import com.vitortenorio.descomplicando.util.ObjectMapperUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 

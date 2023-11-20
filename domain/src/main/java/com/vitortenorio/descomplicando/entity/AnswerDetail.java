@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.model.request;
+package com.vitortenorio.descomplicando.entity;
 
 public record AnswerDetail(
         String id,
