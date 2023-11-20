@@ -1,6 +1,6 @@
-package com.vitortenorio.descomplicando.factory;
+package com.vitortenorio.descomplicando.core.factory;
 
-import com.vitortenorio.descomplicando.model.response.AnswerResponse;
+import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.core.util.JsonNodeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ public class AnswerFactory {
     private final Logger LOGGER = Logger.getLogger(AnswerFactory.class.getName());
 
     public void buildAnswer(JsonNode questionByQuestionId, JsonNode assertion,
-                             Integer answerId, List<AnswerResponse> filterList) {
+                             Integer answerId, List<QuestionAnswerEntity> filterList) {
 
         LOGGER.info("Building answer");
         JsonNode question = jsonNodeUtil.getQuestion(questionByQuestionId);
         JsonNode answer = jsonNodeUtil.getAnswer(assertion);
-        AnswerResponse answerResponse = AnswerResponse.fromJsonNode(question, answer, answerId);
+        QuestionAnswerEntity answerResponse = new QuestionAnswerEntity(question.asText(), answer.asText(), answerId);
 
         LOGGER.info("Adding answer to filter list");
         filterList.add(answerResponse);

@@ -1,6 +1,6 @@
-package com.vitortenorio.descomplicando.factory;
+package com.vitortenorio.descomplicando.core.factory;
 
-import com.vitortenorio.descomplicando.model.response.AnswerResponse;
+import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class AssertionFactory {
     private final AnswerFactory answerFactory;
     private final Logger LOGGER = Logger.getLogger(AssertionFactory.class.getName());
     public void buildAssertion(List<Integer> answerIds, JsonNode assertionList,
-                                JsonNode questionByQuestionId, List<AnswerResponse> answerResponseList) {
+                                JsonNode questionByQuestionId, List<QuestionAnswerEntity> answerResponseList) {
 
         LOGGER.info("Building assertion");
         for (JsonNode assertion : assertionList) {
