@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.util;
+package com.vitortenorio.descomplicando.core.util;
 
 import org.springframework.stereotype.Component;
 

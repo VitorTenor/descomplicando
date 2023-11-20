@@ -18,19 +18,7 @@ public class ConverterController {
     private final ConverterService converterService;
     private final Logger LOGGER = Logger.getLogger(ConverterController.class.getName());
 
-    @PostMapping(value = "/filterTrue", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Integer> filterTrue(@RequestBody Answer assertt) {
-        LOGGER.info("Filtering true assertions");
-        return converterService.filterTrue(assertt);
-    }
 
-    @PostMapping("/findQuestionsByJson")
-    public List<AnswerResponse> findQuestionsByJson(@RequestBody String questionJson,
-                                                    @RequestParam(value = "assertions") String answerJson) {
-
-        LOGGER.info("Finding questions by json");
-        return converterService.processQuestionByAnswer(questionJson, answerJson);
-    }
 
     @PostMapping("/findQuestionsByIds")
     public List<AnswerResponse> findQuestionsByIds(@RequestBody String questionJson,
@@ -39,13 +27,4 @@ public class ConverterController {
         LOGGER.info("Finding questions by ids");
         return converterService.processQuestionByAnswer(questionJson, answerIds);
     }
-
-    @PostMapping("/findQuestionsArray")
-    public List<AnswerResponse> findQuestionsByIdsAndJson(@RequestBody String questionJson,
-                                                          @RequestParam(value = "assertions") List<Integer> answerIds) {
-
-        LOGGER.info("Finding questions by ids and json");
-        return converterService.processQuestionArray(questionJson, answerIds);
-    }
-
 }

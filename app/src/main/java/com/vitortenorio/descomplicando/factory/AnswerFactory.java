@@ -1,7 +1,7 @@
 package com.vitortenorio.descomplicando.factory;
 
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
-import com.vitortenorio.descomplicando.util.JsonNodeUtil;
+import com.vitortenorio.descomplicando.core.util.JsonNodeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

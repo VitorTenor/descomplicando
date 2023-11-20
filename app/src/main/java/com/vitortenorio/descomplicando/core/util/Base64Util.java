@@ -1,6 +1,5 @@
 package com.vitortenorio.descomplicando.core.util;
 
-import com.vitortenorio.descomplicando.util.StringUtil;
 import org.springframework.stereotype.Component;
 
 @Component

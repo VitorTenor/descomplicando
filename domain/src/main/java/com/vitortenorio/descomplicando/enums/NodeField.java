@@ -1,8 +1,6 @@
-package com.vitortenorio.descomplicando.enumerator;
+package com.vitortenorio.descomplicando.enums;
 
-import lombok.Getter;
 
-@Getter
 public enum NodeField {
     DATA("data"),
     BODY("body"),
@@ -18,5 +16,9 @@ public enum NodeField {
 
     NodeField(String field) {
         this.field = field;
+    }
+
+    public String getField() {
+        return field;
     }
 }

@@ -1,7 +1,7 @@
-package com.vitortenorio.descomplicando.util;
+package com.vitortenorio.descomplicando.core.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.vitortenorio.descomplicando.enumerator.NodeField;
+import com.vitortenorio.descomplicando.enums.NodeField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
