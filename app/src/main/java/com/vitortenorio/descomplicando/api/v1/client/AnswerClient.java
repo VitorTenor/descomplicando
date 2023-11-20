@@ -3,7 +3,6 @@ package com.vitortenorio.descomplicando.api.v1.client;
 import com.vitortenorio.descomplicando.core.util.Base64Util;
 import com.vitortenorio.descomplicando.entity.AnswerDetail;
 import com.vitortenorio.descomplicando.gateway.AnswerGateway;
-import com.vitortenorio.descomplicando.model.request.Answer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
