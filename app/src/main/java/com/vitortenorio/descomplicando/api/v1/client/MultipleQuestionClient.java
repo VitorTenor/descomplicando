@@ -1,6 +1,8 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
+import com.vitortenorio.descomplicando.gateway.MultipleQuestionGateway;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
 import com.vitortenorio.descomplicando.util.JsonNodeUtil;
 import com.vitortenorio.descomplicando.util.ObjectMapperUtil;
@@ -12,38 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
-public class MultipleQuestionClient {
-    private final ObjectMapperUtil objectMapperUtil;
-    private final JsonNodeUtil jsonNodeUtil;
+public class MultipleQuestionClient implements MultipleQuestionGateway {
 
-
-    public List<AnswerResponse> processMultipleQuestion(String question, List<Integer> answerIds) {
-        JsonNode nodes = objectMapperUtil.readTree(question);
-        JsonNode data = nodes.path("data");
-        List<JsonNode> nodesList = jsonNodeUtil.createListFromSingleNode(data);
-        List<AnswerResponse> answerResponseList = new ArrayList<>();
-        for (JsonNode node : nodesList) {
-            JsonNode questionNode = node.path("data");
-            JsonNode questionById = questionNode.path("questionById");
-            JsonNode assertionsByQuestionId = questionById.path("assertionsByQuestionIdList");
-            for (JsonNode assertion : assertionsByQuestionId) {
-                for (Integer answerId : answerIds) {
-                    if (assertion.toString().contains(answerId.toString())) {
-                        String correctAnswer = jsonNodeUtil.getAnswer2(assertion).asText();
-                        String cleanedAnswer = Jsoup.parse(correctAnswer).text();
-
-                        String questionText = assertion.path("id").asText();
-                        answerResponseList.add(AnswerResponse.builder()
-                                .question(questionText)
-                                .answer(cleanedAnswer)
-                                .answerId(answerId)
-                                .build());
-                    }
-                }
-            }
-        }
-        return answerResponseList;
+    @Override
+    public List<QuestionAnswerEntity> processQuestionAndAnswer(String question, List<Integer> answerIds) {
+        return null;
     }
-
 }

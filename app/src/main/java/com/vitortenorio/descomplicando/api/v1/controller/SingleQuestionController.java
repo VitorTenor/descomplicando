@@ -1,7 +1,7 @@
 package com.vitortenorio.descomplicando.api.v1.controller;
 
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.usecase.singleQuestion.ProcessSingleQuestionAndAnswerUseCase;
+import com.vitortenorio.descomplicando.usecase.singlequestion.ProcessSingleQuestionAndAnswerUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

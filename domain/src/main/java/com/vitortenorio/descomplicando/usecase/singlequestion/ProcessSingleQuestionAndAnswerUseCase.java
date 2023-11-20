@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.usecase.singleQuestion;
+package com.vitortenorio.descomplicando.usecase.singlequestion;
 
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.gateway.SingleQuestionGateway;
