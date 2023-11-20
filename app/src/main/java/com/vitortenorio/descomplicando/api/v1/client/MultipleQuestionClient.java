@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.client;
+package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.model.response.AnswerResponse;
