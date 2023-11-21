@@ -6,7 +6,7 @@ import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
 
 public record SingleFileInput(
         String lessonName,
-        String disciplinaName,
+        String subjectName,
         JsonNode questions,
         AnswerRequest assertions
 ) {

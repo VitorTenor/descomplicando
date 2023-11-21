@@ -3,7 +3,10 @@ package com.vitortenorio.descomplicando.api.v1.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
+import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
+import com.vitortenorio.descomplicando.core.factory.FileFactory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
+import com.vitortenorio.descomplicando.entity.AnswerEntity;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileClient implements FileGateway {
 
+    private final FileFactory fileFactory;
     private final AnswerClient answerClient;
+    private final SingleFileService singleFileService;
     private final ObjectMapperUtil objectMapperUtil;
     private final SingleQuestionClient singleQuestionClient;
 
@@ -30,22 +35,24 @@ public class FileClient implements FileGateway {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
 
+    @Value("${file.type}")
+    private String FILE_TYPE;
+
     @Override
     public void processSingleFile() {
-        File pasta = new File(PATH_SINGLE);
+        File pasta = fileFactory.createFile(PATH_SINGLE);
         File[] arquivos = pasta.listFiles();
 
         if (arquivos != null && arquivos.length > 0) {
-            for (File arquivoJson : arquivos) {
-                try {
-                    SingleFileInput singleFileInput = objectMapperUtil.readValue(arquivoJson, SingleFileInput.class);
-                    List<Integer> answerIds = answerClient.processTrueAnswer(singleFileInput.assertions().toAnswerEntityList());
-                    List<QuestionAnswerEntity> questionAnswerEntityList = singleQuestionClient.processQuestionAndAnswer(singleFileInput.questions().toString(), answerIds);
-                    gravarListaEmArquivoJson(questionAnswerEntityList, singleFileInput.lessonName().toUpperCase() + ".json", singleFileInput.disciplinaName().toUpperCase());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+            for (File arquivoJson : arquivos) {
+                SingleFileInput singleFileInput = objectMapperUtil.readValue(arquivoJson, SingleFileInput.class);
+                List<Integer> answerIds = singleFileService.processAnswers(singleFileInput.assertions());
+                List<QuestionAnswerEntity> questionAnswer = singleFileService.processQuestionAndAnswer(singleFileInput.questions(), answerIds);
+
+                String filePath = singleFileInput.lessonName().toUpperCase() + FILE_TYPE ;
+                String subjectName = PATH_ANSWER + singleFileInput.subjectName().toUpperCase() + "\\";
+                saveSingleInJsonFile(questionAnswer, filePath, subjectName);
             }
 
         } else {
@@ -53,24 +60,13 @@ public class FileClient implements FileGateway {
         }
     }
 
-    private void gravarListaEmArquivoJson(List<QuestionAnswerEntity> lista, String caminhoArquivo, String folder) {
-        String path = PATH_ANSWER + folder + "\\";
-        Path pathFolder = Path.of(path);
-        if (!Files.exists(pathFolder)) {
-            try {
-                Files.createDirectory(pathFolder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            objectMapper.writeValue(new File(path + caminhoArquivo), lista);
-            System.out.println("Lista gravada com sucesso em: " + path + caminhoArquivo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void saveSingleInJsonFile(List<QuestionAnswerEntity> value, String filePath, String folder) {
+        fileFactory.validateAndCreateDirectory(folder);
+        File file = fileFactory.createFile(folder + filePath);
+        objectMapperUtil.writeValueAsFile(file, value);
     }
+
+
+
+
 }

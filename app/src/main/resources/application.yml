@@ -1,5 +1,6 @@
 
 file:
   path:
-    single: C:\DESCOMPLICANDO\SIMPLE
-    answer: C:\DESCOMPLICANDO\ANSWER
+    single: C:\DESCOMPLICANDO\SIMPLE\
+    answer: C:\DESCOMPLICANDO\ANSWER\
+  type: .json
