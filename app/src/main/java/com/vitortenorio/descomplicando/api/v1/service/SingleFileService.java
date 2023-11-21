@@ -52,7 +52,7 @@ public class SingleFileService {
 
     private void saveSingleInJsonFile(List<QuestionAnswerEntity> value, String filePath, String folder) {
         fileFactory.validateAndCreateDirectory(folder);
-        File file = fileFactory.createFile(folder + filePath);
+        File file = fileFactory.mountFile(folder + filePath);
         objectMapperUtil.writeValueAsFile(file, value);
     }
 }

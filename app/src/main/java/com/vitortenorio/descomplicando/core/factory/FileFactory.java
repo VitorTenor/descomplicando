@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 @Component
 public class FileFactory {
-    public File createFile(String s) {
+    public File mountFile(String s) {
         return new File(s);
     }
 
