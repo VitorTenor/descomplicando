@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.usecase.answer;
 
-import com.vitortenorio.descomplicando.entity.AnswerDetail;
+import com.vitortenorio.descomplicando.entity.AnswerEntity;
 import com.vitortenorio.descomplicando.gateway.AnswerGateway;
 
 import javax.inject.Named;
@@ -14,7 +14,7 @@ public class ProcessTrueAnswerUseCase {
         this.answerGateway = answerGateway;
     }
 
-    public List<Integer> execute(List<AnswerDetail> answer) {
+    public List<Integer> execute(List<AnswerEntity> answer) {
         return answerGateway.processTrueAnswer(answer);
     }
 }

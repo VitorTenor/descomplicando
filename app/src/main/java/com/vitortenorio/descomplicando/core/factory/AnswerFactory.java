@@ -4,6 +4,7 @@ import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.core.util.JsonNodeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,9 +20,12 @@ public class AnswerFactory {
                              Integer answerId, List<QuestionAnswerEntity> filterList) {
 
         LOGGER.info("Building answer");
-        JsonNode question = jsonNodeUtil.getQuestion(questionByQuestionId);
-        JsonNode answer = jsonNodeUtil.getAnswer(assertion);
-        QuestionAnswerEntity answerResponse = new QuestionAnswerEntity(question.asText(), answer.asText(), answerId);
+        String question = jsonNodeUtil.getQuestion(questionByQuestionId).asText();
+        String answer = jsonNodeUtil.getAnswer(assertion).asText();
+
+        String cleanQuestion = Jsoup.parse(question).text();
+
+        QuestionAnswerEntity answerResponse = new QuestionAnswerEntity(cleanQuestion, answer, answerId);
 
         LOGGER.info("Adding answer to filter list");
         filterList.add(answerResponse);

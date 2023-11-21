@@ -18,6 +18,6 @@ public class AnswerController {
 
     @PostMapping("/process")
     public List<Integer> process(@RequestBody AnswerRequest answer) {
-        return processTrueAnswerUseCase.execute(answer.data());
+        return processTrueAnswerUseCase.execute(answer.toAnswerEntityList());
     }
 }

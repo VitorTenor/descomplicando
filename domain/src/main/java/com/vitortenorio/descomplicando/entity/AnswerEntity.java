@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.entity;
 
-public record AnswerDetail(
+public record AnswerEntity(
         String id,
         Boolean correct
 ) {
