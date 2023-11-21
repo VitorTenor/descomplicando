@@ -24,49 +24,23 @@ import java.util.List;
 public class FileClient implements FileGateway {
 
     private final FileFactory fileFactory;
-    private final AnswerClient answerClient;
     private final SingleFileService singleFileService;
-    private final ObjectMapperUtil objectMapperUtil;
-    private final SingleQuestionClient singleQuestionClient;
 
     @Value("${file.path.single}")
     private String PATH_SINGLE;
 
-    @Value("${file.path.answer}")
-    private String PATH_ANSWER;
-
-    @Value("${file.type}")
-    private String FILE_TYPE;
-
     @Override
     public void processSingleFile() {
-        File pasta = fileFactory.createFile(PATH_SINGLE);
-        File[] arquivos = pasta.listFiles();
+        File folder = fileFactory.createFile(PATH_SINGLE);
+        File[] files = folder.listFiles();
 
-        if (arquivos != null && arquivos.length > 0) {
-
-            for (File arquivoJson : arquivos) {
-                SingleFileInput singleFileInput = objectMapperUtil.readValue(arquivoJson, SingleFileInput.class);
-                List<Integer> answerIds = singleFileService.processAnswers(singleFileInput.assertions());
-                List<QuestionAnswerEntity> questionAnswer = singleFileService.processQuestionAndAnswer(singleFileInput.questions(), answerIds);
-
-                String filePath = singleFileInput.lessonName().toUpperCase() + FILE_TYPE ;
-                String subjectName = PATH_ANSWER + singleFileInput.subjectName().toUpperCase() + "\\";
-                saveSingleInJsonFile(questionAnswer, filePath, subjectName);
+        if (files != null && files.length > 0) {
+            for (File arquivoJson : files) {
+                singleFileService.processAllSingleFile(arquivoJson);
             }
-
         } else {
             System.out.println("Não há arquivos no diretório");
         }
     }
-
-    private void saveSingleInJsonFile(List<QuestionAnswerEntity> value, String filePath, String folder) {
-        fileFactory.validateAndCreateDirectory(folder);
-        File file = fileFactory.createFile(folder + filePath);
-        objectMapperUtil.writeValueAsFile(file, value);
-    }
-
-
-
 
 }
