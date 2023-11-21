@@ -11,10 +11,7 @@ public record AnswerRequest (
 ){
     public List<AnswerEntity> toAnswerEntityList() {
         return data.stream()
-                .map(answer -> new AnswerEntity(
-                        answer.id(),
-                        answer.correct()
-                ))
+                .map(answer -> new AnswerEntity(answer.id(), answer.correct()))
                 .toList();
     }
 }

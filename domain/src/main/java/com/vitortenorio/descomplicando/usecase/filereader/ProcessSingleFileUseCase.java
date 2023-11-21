@@ -1,19 +1,18 @@
 package com.vitortenorio.descomplicando.usecase.filereader;
 
-import com.vitortenorio.descomplicando.gateway.FileReaderGateway;
+import com.vitortenorio.descomplicando.gateway.FileGateway;
 
 import javax.inject.Named;
-import java.io.IOException;
 
 @Named
 public class ProcessSingleFileUseCase {
-    private final FileReaderGateway fileReaderGateway;
+    private final FileGateway fileGateway;
 
-    public ProcessSingleFileUseCase(FileReaderGateway fileReaderGateway) {
-        this.fileReaderGateway = fileReaderGateway;
+    public ProcessSingleFileUseCase(FileGateway fileGateway) {
+        this.fileGateway = fileGateway;
     }
 
-    public void execute() throws IOException {
-        fileReaderGateway.processSingleFile();
+    public void execute() {
+        fileGateway.processSingleFile();
     }
 }

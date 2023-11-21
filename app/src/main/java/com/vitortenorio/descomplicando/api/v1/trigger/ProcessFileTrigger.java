@@ -9,11 +9,11 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class ProcessFilesTrigger {
+public class ProcessFileTrigger {
     private final ProcessSingleFileUseCase processSingleFileUseCase;
 
     @PostConstruct
-    public void processFile() throws IOException {
+    public void processFile() {
         processSingleFileUseCase.execute();
     }
 }

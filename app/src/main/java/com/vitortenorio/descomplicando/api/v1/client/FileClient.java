@@ -3,9 +3,11 @@ package com.vitortenorio.descomplicando.api.v1.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
+import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.gateway.FileReaderGateway;
+import com.vitortenorio.descomplicando.gateway.FileGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,24 +18,27 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FileReaderClient implements FileReaderGateway {
+public class FileClient implements FileGateway {
 
     private final AnswerClient answerClient;
+    private final ObjectMapperUtil objectMapperUtil;
     private final SingleQuestionClient singleQuestionClient;
+
+    @Value("${file.path.single}")
+    private String PATH_SINGLE;
+
+    @Value("${file.path.answer}")
+    private String PATH_ANSWER;
 
     @Override
     public void processSingleFile() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String diretorio = "C:\\DESCOMPLICANDO\\SIMPLE";
-
-        File pasta = new File(diretorio);
+        File pasta = new File(PATH_SINGLE);
         File[] arquivos = pasta.listFiles();
 
         if (arquivos != null && arquivos.length > 0) {
             for (File arquivoJson : arquivos) {
                 try {
-                    SingleFileInput singleFileInput = objectMapper.readValue(arquivoJson, SingleFileInput.class);
+                    SingleFileInput singleFileInput = objectMapperUtil.readValue(arquivoJson, SingleFileInput.class);
                     List<Integer> answerIds = answerClient.processTrueAnswer(singleFileInput.assertions().toAnswerEntityList());
                     List<QuestionAnswerEntity> questionAnswerEntityList = singleQuestionClient.processQuestionAndAnswer(singleFileInput.questions().toString(), answerIds);
                     gravarListaEmArquivoJson(questionAnswerEntityList, singleFileInput.lessonName().toUpperCase() + ".json", singleFileInput.disciplinaName().toUpperCase());
@@ -43,11 +48,13 @@ public class FileReaderClient implements FileReaderGateway {
 
             }
 
+        } else {
+            System.out.println("Não há arquivos no diretório");
         }
     }
 
     private void gravarListaEmArquivoJson(List<QuestionAnswerEntity> lista, String caminhoArquivo, String folder) {
-        String path = "C:\\DESCOMPLICANDO\\ANSWER\\" + folder + "\\";
+        String path = PATH_ANSWER + folder + "\\";
         Path pathFolder = Path.of(path);
         if (!Files.exists(pathFolder)) {
             try {

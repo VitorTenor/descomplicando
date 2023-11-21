@@ -6,6 +6,7 @@ import com.vitortenorio.descomplicando.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 @Component
@@ -14,7 +15,6 @@ public class ObjectMapperUtil {
     private final ObjectMapper objectMapper;
     private final Logger LOGGER = Logger.getLogger(ObjectMapperUtil.class.getName());
     public JsonNode readTree(String json) {
-        LOGGER.info("Reading tree");
         try {
             return objectMapper.readTree(json);
         } catch (Exception e) {
@@ -24,9 +24,17 @@ public class ObjectMapperUtil {
     }
 
     public <T> T readValue(String json, Class<T> clazz) {
-        LOGGER.info("Reading value");
         try {
             return objectMapper.readValue(json, clazz);
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    public <T> T readValue(File file, Class<T> clazz) {
+        try {
+            return objectMapper.readValue(file, clazz);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new BusinessException(e.getMessage());
