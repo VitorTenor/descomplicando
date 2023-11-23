@@ -29,7 +29,7 @@ public class FileClient implements FileGateway {
                 singleFileService.processAllSingleFile(arquivoJson);
             }
         } else {
-            System.out.println("Não há arquivos no diretório");
+            System.out.println("Doesn't exist files to process.");
         }
     }
 
