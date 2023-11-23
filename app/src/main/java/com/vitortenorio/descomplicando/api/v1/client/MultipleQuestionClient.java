@@ -30,7 +30,7 @@ public class MultipleQuestionClient implements MultipleQuestionGateway {
             for (JsonNode assertion : assertionsByQuestionId) {
                 for (Integer answerId : answerIds) {
                     if (assertion.toString().contains(answerId.toString())) {
-                        String correctAnswer = jsonNodeUtil.getAnswer2(assertion).asText();
+                        String correctAnswer = jsonNodeUtil.getMultipleAnswer(assertion).asText();
                         String cleanedAnswer = Jsoup.parse(correctAnswer).text();
 
                         String questionText = assertion.path("id").asText();
@@ -41,4 +41,6 @@ public class MultipleQuestionClient implements MultipleQuestionGateway {
         }
         return answerResponseList;
     }
+
+
 }
