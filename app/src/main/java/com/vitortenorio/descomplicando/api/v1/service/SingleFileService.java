@@ -30,16 +30,6 @@ public class SingleFileService {
     @Value("${file.type}")
     private String FILE_TYPE;
 
-
-    public List<Integer> processAnswers(AnswerRequest assertions) {
-        List<AnswerEntity> answerEntityList = assertions.toAnswerEntityList();
-        return answerClient.processTrueAnswer(answerEntityList);
-    }
-
-    public List<QuestionAnswerEntity> processQuestionAndAnswer(JsonNode questions, List<Integer> answerIds) {
-        return singleQuestionClient.processQuestionAndAnswer(questions.toString(), answerIds);
-    }
-
     public void processAllSingleFile(File arquivoJson) {
         SingleFileInput singleFileInput = objectMapperUtil.readValue(arquivoJson, SingleFileInput.class);
         List<Integer> answerIds = processAnswers(singleFileInput.assertions());
@@ -48,6 +38,15 @@ public class SingleFileService {
         String filePath = singleFileInput.lessonName().toUpperCase() + FILE_TYPE ;
         String subjectName = PATH_ANSWER + singleFileInput.subjectName().toUpperCase() + "\\";
         saveSingleInJsonFile(questionAnswer, filePath, subjectName);
+    }
+
+    private List<Integer> processAnswers(AnswerRequest assertions) {
+        List<AnswerEntity> answerEntityList = assertions.toAnswerEntityList();
+        return answerClient.processTrueAnswer(answerEntityList);
+    }
+
+    private List<QuestionAnswerEntity> processQuestionAndAnswer(JsonNode questions, List<Integer> answerIds) {
+        return singleQuestionClient.processQuestionAndAnswer(questions.toString(), answerIds);
     }
 
     private void saveSingleInJsonFile(List<QuestionAnswerEntity> value, String filePath, String folder) {
