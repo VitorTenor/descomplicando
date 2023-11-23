@@ -11,56 +11,66 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
 public class SingleQuestionClient implements SingleQuestionGateway {
     private final JsonNodeUtil jsonNodeUtil;
+
     @Override
     public List<QuestionAnswerEntity> processQuestionAndAnswer(String question, List<Integer> answerIds) {
-        JsonNode nodes = jsonNodeUtil.buildMainNode(question);
+        JsonNode questionNodes = jsonNodeUtil.buildMainNode(question);
+        List<JsonNode> questions = getQuestionsFromNodes(questionNodes);
 
-        if (nodes.isArray()) {
-            List<JsonNode> questionList = jsonNodeUtil.createListFromSingleNode(nodes);
+        List<QuestionAnswerEntity> answerResponses = new ArrayList<>();
+        findAndBuildQuestions(answerIds, questions, answerResponses);
 
-            List<QuestionAnswerEntity> answerResponseList = new ArrayList<>();
-            findAndBuildQuestion(answerIds, questionList, answerResponseList);
-
-            return answerResponseList;
-        }
-        throw new BusinessException("Json is not an array");
+        return answerResponses;
     }
 
-    private void findAndBuildQuestion(List<Integer> answerIds, List<JsonNode> filterList,
-                                     List<QuestionAnswerEntity> answerResponseList) {
-        for (JsonNode node : filterList) {
-            JsonNode questionByQuestionId = node.path("questionByQuestionId");
-            JsonNode assertionList = questionByQuestionId.path("assertionsByQuestionId").path("nodes");
-            buildAssertion(answerIds, assertionList, questionByQuestionId, answerResponseList);
+    private List<JsonNode> getQuestionsFromNodes(JsonNode nodes) {
+        return Objects.requireNonNull(jsonNodeUtil.createListFromSingleNode(nodes));
+    }
+
+    private void findAndBuildQuestions(List<Integer> answerIds, List<JsonNode> questions,
+                                       List<QuestionAnswerEntity> answerResponses) {
+        for (JsonNode question : questions) {
+            buildAssertions(answerIds, question, answerResponses);
         }
     }
 
-    private void buildAssertion(List<Integer> answerIds, JsonNode assertionList,
-                               JsonNode questionByQuestionId, List<QuestionAnswerEntity> answerResponseList) {
+    private void buildAssertions(List<Integer> answerIds, JsonNode question,
+                                 List<QuestionAnswerEntity> answerResponses) {
+        JsonNode questionByQuestionId = question.path("questionByQuestionId");
+        JsonNode assertionList = questionByQuestionId.path("assertionsByQuestionId").path("nodes");
+        validateAssertions(answerIds, assertionList, questionByQuestionId, answerResponses);
+    }
 
+    private void validateAssertions(List<Integer> answerIds, JsonNode assertionList,
+                                    JsonNode questionByQuestionId, List<QuestionAnswerEntity> answerResponses) {
         for (JsonNode assertion : assertionList) {
-            for (Integer answerId : answerIds) {
-                if (assertion.toString().contains(answerId.toString())) {
-                    buildAnswer(questionByQuestionId, assertion, answerId, answerResponseList);
-                }
+            validateAssertion(answerIds, assertion, questionByQuestionId, answerResponses);
+        }
+    }
+
+    private void validateAssertion(List<Integer> answerIds, JsonNode assertion,
+                                   JsonNode questionByQuestionId, List<QuestionAnswerEntity> answerResponses) {
+        for (Integer answerId : answerIds) {
+            if (assertion.toString().contains(answerId.toString())) {
+                buildAnswer(questionByQuestionId, assertion, answerId, answerResponses);
             }
         }
     }
 
     private void buildAnswer(JsonNode questionByQuestionId, JsonNode assertion,
-                            Integer answerId, List<QuestionAnswerEntity> filterList) {
+                             Integer answerId, List<QuestionAnswerEntity> answerResponses) {
+        String questionText = jsonNodeUtil.getQuestion(questionByQuestionId).asText();
+        String answerText = jsonNodeUtil.getSingleAnswer(assertion).asText();
 
-        String question = jsonNodeUtil.getQuestion(questionByQuestionId).asText();
-        String answer = jsonNodeUtil.getSingleAnswer(assertion).asText();
+        String cleanQuestion = Jsoup.parse(questionText).text();
 
-        String cleanQuestion = Jsoup.parse(question).text();
-
-        QuestionAnswerEntity answerResponse = new QuestionAnswerEntity(cleanQuestion, answer, answerId);
-        filterList.add(answerResponse);
+        QuestionAnswerEntity answerResponse = new QuestionAnswerEntity(cleanQuestion, answerText, answerId);
+        answerResponses.add(answerResponse);
     }
 }
