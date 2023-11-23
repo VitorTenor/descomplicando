@@ -1,5 +1,6 @@
 package com.vitortenorio.descomplicando.core.factory;
 
+import com.vitortenorio.descomplicando.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class FileFactory {
         try {
             Files.createDirectory(pathFolder);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BusinessException("Error to create directory: " + pathFolder);
         }
     }
 
