@@ -3,7 +3,6 @@ package com.vitortenorio.descomplicando.api.v1.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.core.util.JsonNodeUtil;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.gateway.SingleQuestionGateway;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
