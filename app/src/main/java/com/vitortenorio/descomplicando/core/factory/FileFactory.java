@@ -15,7 +15,7 @@ public class FileFactory {
 
     public void createDirectory(Path pathFolder) {
         try {
-            Files.createDirectory(pathFolder);
+            Files.createDirectories(pathFolder);
         } catch (Exception e) {
             throw new BusinessException("Error to create directory: " + pathFolder);
         }
