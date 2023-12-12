@@ -4,12 +4,11 @@ import com.vitortenorio.descomplicando.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-public class FileFactory {
+public class FileDirectoryFactory {
     public File mountFile(String s) {
         return new File(s);
     }

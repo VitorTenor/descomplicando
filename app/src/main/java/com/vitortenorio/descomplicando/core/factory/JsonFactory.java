@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JsonFactory {
 
-    private final FileFactory fileFactory;
+    private final FileDirectoryFactory fileDirectoryFactory;
     private final ObjectMapperUtil objectMapperUtil;
 
     @Value("${file.path.answer}")
@@ -21,7 +21,7 @@ public class JsonFactory {
 
     public <T> void createAndSaveFile(List<T> values, String folderName, String fileName) {
         String finalPath = PATH_ANSWER + folderName;
-        fileFactory.validateAndCreateDirectory(finalPath);
+        fileDirectoryFactory.validateAndCreateDirectory(finalPath);
 
         saveFile(
                 createFile(finalPath + fileName),
@@ -30,7 +30,7 @@ public class JsonFactory {
     }
 
     private File createFile(String folderAndFileName) {
-        return fileFactory.mountFile(folderAndFileName + JSON_EXTENSION);
+        return fileDirectoryFactory.mountFile(folderAndFileName + JSON_EXTENSION);
     }
 
     private <T> void saveFile(File file, List<T> values) {

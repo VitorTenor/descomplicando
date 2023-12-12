@@ -2,7 +2,7 @@ package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
-import com.vitortenorio.descomplicando.core.factory.FileFactory;
+import com.vitortenorio.descomplicando.core.factory.FileDirectoryFactory;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FileClient implements FileGateway {
 
-    private final FileFactory fileFactory;
+    private final FileDirectoryFactory fileDirectoryFactory;
     private final SingleFileService singleFileService;
     private final JsonFactory jsonFactory;
     private final XlsxFactory xlsxFactory;
@@ -32,7 +32,7 @@ public class FileClient implements FileGateway {
 
     @Override
     public void processSingleFile() {
-        File folder = fileFactory.mountFile(PATH_SINGLE);
+        File folder = fileDirectoryFactory.mountFile(PATH_SINGLE);
         File[] files = folder.listFiles();
 
         if (files != null && files.length > 0) {

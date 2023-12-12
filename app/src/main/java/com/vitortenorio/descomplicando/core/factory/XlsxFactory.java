@@ -18,7 +18,7 @@ public class XlsxFactory {
 
     private static final String XLSX_EXTENSION = ".xlsx";
     private final ObjectMapperUtil objectMapperUtil;
-    private final FileFactory fileFactory;
+    private final FileDirectoryFactory fileDirectoryFactory;
 
     public void createAndSaveSingleFile(List<SingleQuestionModel> list, String fileName, Workbook workbook) {
             Sheet sheet = workbook.createSheet(fileName);
@@ -51,7 +51,7 @@ public class XlsxFactory {
 
     public void saveWorkbook(Workbook workbook) {
         // Salvamento do arquivo
-        fileFactory.validateAndCreateDirectory(PATH_ANSWER);
+        fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
         try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + ".xlsx")) {
             workbook.write(fileOut);
         } catch (Exception e) {
