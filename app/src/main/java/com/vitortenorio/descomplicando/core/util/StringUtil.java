@@ -21,7 +21,7 @@ public class StringUtil {
     }
 
     public static String divideAndCleanWord(String word) {
-        String[] words = divideWordByKey(word, " ");
+        String[] words = divideWordByKey(word, "-");
 
         StringBuilder cleanWord = new StringBuilder();
         for (String s : words) {
