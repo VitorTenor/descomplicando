@@ -1,6 +1,7 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
+import com.vitortenorio.descomplicando.core.factory.CsvFactory;
 import com.vitortenorio.descomplicando.core.factory.FileFactory;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
@@ -21,6 +22,7 @@ public class FileClient implements FileGateway {
     private final FileFactory fileFactory;
     private final SingleFileService singleFileService;
     private final JsonFactory jsonFactory;
+    private final CsvFactory csvFactory;
     private final SingleQuestionData singleQuestionData;
 
     @Value("${file.path.single}")
@@ -47,8 +49,8 @@ public class FileClient implements FileGateway {
         for (Map.Entry<String, List<SingleQuestionModel>> entry : singleQuestionModelMap.entrySet()) {
             String folderName = entry.getKey();
             List<SingleQuestionModel> singleQuestionModelList = entry.getValue();
-
-            jsonFactory.createAndSaveFile(singleQuestionModelList, folderName, "answers");
+            csvFactory.createAndSaveSingleFile(singleQuestionModelList, folderName);
+//            jsonFactory.createAndSaveFile(singleQuestionModelList, folderName, "answers");
         }
     }
 

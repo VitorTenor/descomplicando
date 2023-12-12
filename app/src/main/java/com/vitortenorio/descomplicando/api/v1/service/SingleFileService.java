@@ -33,7 +33,7 @@ public class SingleFileService {
 
         String fileName = singleFileInput.lessonName().toUpperCase();
 
-        String folderName = singleFileInput.subjectName().toUpperCase() + "\\";
+        String folderName = singleFileInput.subjectName().toUpperCase() ; //+ "\\";
 
 //        jsonFactory.createAndSaveFile(questionAnswers, folderName, fileName);
 
