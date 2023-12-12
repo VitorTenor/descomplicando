@@ -1,16 +1,15 @@
 package com.vitortenorio.descomplicando.core.factory;
 
-import com.opencsv.CSVWriter;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
@@ -25,21 +24,38 @@ public class CsvFactory {
 
 
     public void createAndSaveSingleFile(List<SingleQuestionModel> list, String fileName) {
-        fileFactory.validateAndCreateDirectory(PATH_ANSWER);
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet(fileName);
 
-        try (Writer writer = new FileWriter(PATH_ANSWER + fileName + CSV_EXTENSION, StandardCharsets.UTF_8);
-             CSVWriter csvWriter = new CSVWriter(writer, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+            // Criação de uma fonte com negrito
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
 
-             String[] headers = {"lesson", "question", "answer"};
-            csvWriter.writeNext(headers);
+            // Criação de um estilo com a fonte negrito
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
 
+            // Criação do cabeçalho em negrito
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {"LESSON", "QUESTION", "ANSWER"};
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+
+            int rowNum = 1;
             for (SingleQuestionModel answer : list) {
-                String[] data = {
-                        "\"" + answer.lesson() + "\"",
-                        "\"" + answer.question() + "\"",
-                        "\"" + answer.answer() + "\""
-                };
-                csvWriter.writeNext(data);
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(answer.lesson());
+                row.createCell(1).setCellValue(answer.question());
+                row.createCell(2).setCellValue(answer.answer());
+            }
+
+            // Salvamento do arquivo
+            fileFactory.validateAndCreateDirectory(PATH_ANSWER);
+            try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + fileName + ".xlsx")) {
+                workbook.write(fileOut);
             }
 
         } catch (IOException e) {
