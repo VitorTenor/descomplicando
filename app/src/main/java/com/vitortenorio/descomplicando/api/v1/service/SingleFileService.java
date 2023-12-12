@@ -9,6 +9,8 @@ import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.entity.AnswerEntity;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
+import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class SingleFileService {
     private final ObjectMapperUtil objectMapperUtil;
     private final SingleQuestionClient singleQuestionClient;
     private final JsonFactory jsonFactory;
+    private final SingleQuestionData singleQuestionData;
 
     public void processAllSingleFile(File jsonFile) {
         SingleFileInput singleFileInput = readSingleFile(jsonFile);
@@ -32,8 +35,18 @@ public class SingleFileService {
 
         String folderName = singleFileInput.subjectName().toUpperCase() + "\\";
 
-        jsonFactory.createAndSaveFile(questionAnswers, folderName, fileName);
+//        jsonFactory.createAndSaveFile(questionAnswers, folderName, fileName);
+
+        saveInData(questionAnswers, folderName, fileName);
     }
+
+    private void saveInData(List<QuestionAnswerEntity> questionAnswers, String folderName, String fileName) {
+        List<SingleQuestionModel> singleQuestionModelList = questionAnswers.stream().map(
+                questionAnswerEntity -> SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, fileName)).toList();
+
+        singleQuestionData.addSingleQuestionModel(folderName, singleQuestionModelList);
+    }
+
 
     private SingleFileInput readSingleFile(File jsonFile) {
         return objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
