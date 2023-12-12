@@ -1,13 +1,15 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
-import com.vitortenorio.descomplicando.core.factory.CsvFactory;
+import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.core.factory.FileFactory;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,7 @@ public class FileClient implements FileGateway {
     private final FileFactory fileFactory;
     private final SingleFileService singleFileService;
     private final JsonFactory jsonFactory;
-    private final CsvFactory csvFactory;
+    private final XlsxFactory xlsxFactory;
     private final SingleQuestionData singleQuestionData;
 
     @Value("${file.path.single}")
@@ -46,12 +48,15 @@ public class FileClient implements FileGateway {
     private void createAndSaveFile() {
         Map<String, List<SingleQuestionModel>> singleQuestionModelMap = singleQuestionData.getSingleQuestionModelMap();
 
+        Workbook workbook = new XSSFWorkbook();
         for (Map.Entry<String, List<SingleQuestionModel>> entry : singleQuestionModelMap.entrySet()) {
             String folderName = entry.getKey();
             List<SingleQuestionModel> singleQuestionModelList = entry.getValue();
-            csvFactory.createAndSaveSingleFile(singleQuestionModelList, folderName);
-//            jsonFactory.createAndSaveFile(singleQuestionModelList, folderName, "answers");
+            xlsxFactory.createAndSaveSingleFile(singleQuestionModelList, folderName, workbook);
         }
+
+        xlsxFactory.saveWorkbook(workbook);
+
     }
 
 }

@@ -7,6 +7,7 @@ import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
 import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
+import com.vitortenorio.descomplicando.core.util.StringUtil;
 import com.vitortenorio.descomplicando.entity.AnswerEntity;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
@@ -31,9 +32,9 @@ public class SingleFileService {
         List<Integer> answerIds = processAnswers(singleFileInput.assertions());
         List<QuestionAnswerEntity> questionAnswers = processQuestionAndAnswer(singleFileInput.questions(), answerIds);
 
-        String fileName = singleFileInput.lessonName().toUpperCase();
+        String fileName = StringUtil.divideAndCleanWord(singleFileInput.lessonName().toUpperCase());
 
-        String folderName = singleFileInput.subjectName().toUpperCase() ; //+ "\\";
+        String folderName = StringUtil.divideAndCleanWord(singleFileInput.subjectName().toUpperCase()) ; //+ "\\";
 
 //        jsonFactory.createAndSaveFile(questionAnswers, folderName, fileName);
 

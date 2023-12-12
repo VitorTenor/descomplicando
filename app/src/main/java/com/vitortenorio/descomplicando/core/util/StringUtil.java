@@ -19,4 +19,24 @@ public class StringUtil {
 
         return new String(charArray);
     }
+
+    public static String divideAndCleanWord(String word) {
+        String[] words = divideWordByKey(word, " ");
+
+        StringBuilder cleanWord = new StringBuilder();
+        for (String s : words) {
+            cleanWord.append(cleanWord(s)).append(" ");
+        }
+
+        return cleanWord.toString().trim();
+    }
+
+    public static String[] divideWordByKey(String word, String key) {
+        return word.split(key);
+    }
+
+    public static String cleanWord(String word) {
+        return word.replaceAll("\\b\\w*\\d\\w*\\b", "");
+    }
 }
+
