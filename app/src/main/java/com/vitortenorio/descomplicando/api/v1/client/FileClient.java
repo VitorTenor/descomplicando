@@ -2,8 +2,6 @@ package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
-import com.vitortenorio.descomplicando.core.factory.FileDirectoryFactory;
-import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
@@ -31,10 +28,10 @@ public class FileClient implements FileGateway {
 
     @Override
     public void process() {
-        processSingleFile();
+        processSingleNodeFile();
     }
 
-    public void processSingleFile() {
+    public void processSingleNodeFile() {
         log.info("Starting to process files in the directory: {}", PATH_SINGLE);
         final var files = new File(PATH_SINGLE).listFiles();
 

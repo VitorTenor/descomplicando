@@ -38,9 +38,12 @@ public class SingleFileService {
     private void saveInData(final List<QuestionAnswerEntity> questionAnswers, final String subjectName,
                             final String lessonName) {
 
-        final var data = questionAnswers.stream().parallel().map(
-                questionAnswerEntity -> SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, lessonName)
-        ).toList();
+        final var data = questionAnswers.stream()
+                .parallel()
+                .map(questionAnswerEntity ->
+                        SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, lessonName)
+                )
+                .toList();
 
         singleQuestionData.addOrCreate(subjectName, data);
     }
