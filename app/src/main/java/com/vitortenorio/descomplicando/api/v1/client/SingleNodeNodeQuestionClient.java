@@ -62,8 +62,8 @@ public class SingleNodeNodeQuestionClient implements SingleNodeQuestionGateway {
     private void validateAssertion(List<Integer> answerIds, JsonNode assertion,
                                    JsonNode question, List<QuestionAnswerEntity> correctAnswerResponse) {
         answerIds.stream()
-                .filter(answerId -> assertion.toString().contains(answerId.toString()))
                 .parallel()
+                .filter(answerId -> assertion.toString().contains(answerId.toString()))
                 .forEach(answerId -> buildAnswer(question, assertion, answerId, correctAnswerResponse));
     }
 
