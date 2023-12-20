@@ -4,6 +4,7 @@ import com.vitortenorio.descomplicando.core.util.XlsxUtil;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.manager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,7 @@ public class XlsxFactory {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
     private final FileDirectoryFactory fileDirectoryFactory;
-
+    private final FileManager fileManager;
 
     public void createWorkbookSheet(String valueKey, List<SingleQuestionModel> values, Workbook workbook) {
         var sheet = workbook.createSheet(valueKey);
@@ -62,11 +63,7 @@ public class XlsxFactory {
         fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
 
         final var directoryWithFile = STR."\{ PATH_ANSWER }answers\{ FileType.XLSX.extension() }";
-
-        try (FileOutputStream fileOut = new FileOutputStream(directoryWithFile)) {
-            workbook.write(fileOut);
-        } catch (Exception e) {
-            throw new BusinessException(STR."Error to save workbook. Cause: \{ e.getMessage() }");
-        }
+        var file = new File(directoryWithFile);
+        fileManager.write(file, workbook, FileType.XLSX);
     }
 }

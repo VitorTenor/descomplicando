@@ -3,7 +3,6 @@ package com.vitortenorio.descomplicando.core.factory;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

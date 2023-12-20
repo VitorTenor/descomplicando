@@ -3,6 +3,7 @@ package com.vitortenorio.descomplicando.core.factory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.manager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ public class JsonFactory {
     private String PATH_ANSWER;
     private static final String EXTENSION = FileType.JSON.extension();
 
-    private final ObjectMapperUtil objectMapperUtil;
     private final FileDirectoryFactory fileDirectoryFactory;
+    private final FileManager fileManager;
 
     public void createJsonFile(String key, List<SingleQuestionModel> values) {
         final var directoryPath = STR."\{PATH_ANSWER}/\{key}";
@@ -37,7 +38,7 @@ public class JsonFactory {
 
         organizedValues.forEach((k, v) -> {
             var file = new File(STR."\{directoryPath}/\{k}\{EXTENSION}");
-            objectMapperUtil.writeValueAsFile(file, v);
+            fileManager.write(file, v, FileType.JSON);
         });
     }
 }

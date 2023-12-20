@@ -14,6 +14,6 @@ public class ProcessFileTrigger {
 
     @PostConstruct
     public void processFile() {
-        processSingleFileUseCase.execute(FileType.XLSX);
+        processSingleFileUseCase.execute(FileType.JSON);
     }
 }
