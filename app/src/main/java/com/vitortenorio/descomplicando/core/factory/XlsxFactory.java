@@ -44,11 +44,13 @@ public class XlsxFactory {
         Row headerRow = sheet.createRow(0);
         var headers = List.of("LESSON", "QUESTION", "ANSWER");
 
-        headers.forEach(header -> {
-            Cell cell = headerRow.createCell(headers.indexOf(header));
-            cell.setCellValue(header);
-            cell.setCellStyle(headerCellStyle);
-        });
+        headers.forEach(header -> addHeader(headerRow, headerCellStyle, header, headers.indexOf(header)));
+    }
+
+    private void addHeader(Row headerRow, CellStyle headerCellStyle, String header, int index) {
+        Cell cell = headerRow.createCell(index);
+        cell.setCellValue(header);
+        cell.setCellStyle(headerCellStyle);
     }
 
     public void saveFile(Workbook workbook) {
