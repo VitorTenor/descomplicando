@@ -1,6 +1,7 @@
 package com.vitortenorio.descomplicando.core.factory;
 
 import com.vitortenorio.descomplicando.core.util.XlsxUtil;
+import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -58,7 +59,7 @@ public class XlsxFactory {
         try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + XLSX_EXTENSION)) {
             workbook.write(fileOut);
         } catch (Exception e) {
-            throw new RuntimeException("Error to save workbook.");
+            throw new BusinessException("Error to save workbook.");
         }
     }
 }
