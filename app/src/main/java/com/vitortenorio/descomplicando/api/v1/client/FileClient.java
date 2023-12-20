@@ -38,14 +38,11 @@ public class FileClient implements FileGateway {
     }
 
     public void processSingleNodeFile(FileType fileType) {
-        log.info("Starting to process files in the directory: {}", PATH_SINGLE);
         final var files = new File(PATH_SINGLE).listFiles();
 
         if (Objects.nonNull(files) && files.length > 0) {
             processFiles(files);
             createAndSaveFile(fileType);
-        } else {
-            log.info("No files found in the directory: {}", PATH_SINGLE);
         }
     }
 
