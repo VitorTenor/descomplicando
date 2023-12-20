@@ -2,6 +2,7 @@ package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
+import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class FileClient implements FileGateway {
     private String PATH_SINGLE;
 
     @Override
-    public void process() {
+    public void process(FileType fileType) {
         processSingleNodeFile();
     }
 
