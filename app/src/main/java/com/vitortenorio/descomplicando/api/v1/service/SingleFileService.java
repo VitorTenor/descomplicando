@@ -29,8 +29,8 @@ public class SingleFileService {
 
         var questionAnswers = processQuestionAndAnswerEntity(singleFileInput);
 
-        String lessonName = StringUtil.divideAndCleanWord(singleFileInput.lessonName()).toUpperCase();
-        String subjectName = StringUtil.divideAndCleanWord(singleFileInput.subjectName()).toUpperCase();
+        final var lessonName = StringUtil.divideAndCleanWord(singleFileInput.lessonName()).toUpperCase();
+        final var subjectName = StringUtil.divideAndCleanWord(singleFileInput.subjectName()).toUpperCase();
 
         saveInData(questionAnswers, subjectName, lessonName);
     }
