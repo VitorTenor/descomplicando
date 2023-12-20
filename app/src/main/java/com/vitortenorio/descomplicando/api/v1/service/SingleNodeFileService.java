@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SingleFileService {
+public class SingleNodeFileService {
     private final AnswerClient answerClient;
     private final ObjectMapperUtil objectMapperUtil;
     private final SingleQuestionData singleQuestionData;

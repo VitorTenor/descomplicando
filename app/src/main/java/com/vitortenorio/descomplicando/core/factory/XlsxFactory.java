@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
@@ -19,20 +20,22 @@ public class XlsxFactory {
     private static final String XLSX_EXTENSION = ".xlsx";
 
     public void createWorkbookSheet(String valueKey, List<SingleQuestionModel> values, Workbook workbook) {
-            var sheet = workbook.createSheet(valueKey);
+        var sheet = workbook.createSheet(valueKey);
 
-            createHeaderRow(sheet, workbook);
-            createContentRow(sheet, values);
+        createHeaderRow(sheet, workbook);
+        createContentRow(sheet, values);
     }
 
     private void createContentRow(Sheet sheet, List<SingleQuestionModel> values) {
-        int rowNum = 1;
-        for (SingleQuestionModel value : values) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(value.lesson());
-            row.createCell(1).setCellValue(value.question());
-            row.createCell(2).setCellValue(value.answer());
-        }
+        var rowNum = new AtomicInteger(1);
+        values.forEach(value -> addContent(value, sheet, rowNum));
+    }
+
+    private void addContent(final SingleQuestionModel value, Sheet sheet, AtomicInteger rowNum) {
+        var row = sheet.createRow(rowNum.getAndIncrement());
+        row.createCell(0).setCellValue(value.lesson());
+        row.createCell(1).setCellValue(value.question());
+        row.createCell(2).setCellValue(value.answer());
     }
 
     private void createHeaderRow(Sheet sheet, Workbook workbook) {

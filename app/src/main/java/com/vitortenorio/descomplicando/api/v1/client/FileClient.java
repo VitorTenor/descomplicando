@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
-import com.vitortenorio.descomplicando.api.v1.service.SingleFileService;
+import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
@@ -19,7 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class FileClient implements FileGateway {
 
-    private final SingleFileService singleFileService;
+    private final SingleNodeFileService singleNodeFileService;
     private final XlsxFactory xlsxFactory;
     private final SingleQuestionData singleQuestionData;
 
@@ -47,7 +47,7 @@ public class FileClient implements FileGateway {
     private void processFiles(final File[] files) {
         Arrays.stream(files)
                 .parallel()
-                .forEach(singleFileService::processSingleFile);
+                .forEach(singleNodeFileService::processSingleFile);
     }
 
     private void createAndSaveFile() {

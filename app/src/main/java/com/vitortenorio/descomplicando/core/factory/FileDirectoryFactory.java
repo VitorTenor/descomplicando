@@ -9,11 +9,8 @@ import java.nio.file.Path;
 
 @Component
 public class FileDirectoryFactory {
-    public File mountFile(String s) {
-        return new File(s);
-    }
 
-    public void createDirectory(Path pathFolder) {
+    public void createDirectory(final Path pathFolder) {
         try {
             Files.createDirectories(pathFolder);
         } catch (Exception e) {
@@ -21,8 +18,8 @@ public class FileDirectoryFactory {
         }
     }
 
-    public void validateAndCreateDirectory(String path) {
-        Path pathFolder = Path.of(path);
+    public void validateAndCreateDirectory(final String path) {
+        var pathFolder = Path.of(path);
 
         if (!Files.exists(pathFolder)) {
             createDirectory(pathFolder);

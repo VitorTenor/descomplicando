@@ -1,9 +1,11 @@
 package com.vitortenorio.descomplicando.infra;
 
 
-import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.Map;
 
-@Component
-public class LocalData {
+public interface LocalData <T> {
+    void addOrCreate(String key, List<T> data);
 
+    Map<String, List<T>> getAll();
 }

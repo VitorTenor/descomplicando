@@ -28,13 +28,6 @@ public class JsonNodeUtil {
                 .path(NodeField.BODY.getField());
     }
 
-    public JsonNode getMultipleAnswer(JsonNode jsonNode) {
-        return jsonNode.path(NodeField.CONTENTS_BY_ASSERTION_ID_LIST.getField())
-                .get(0)
-                .path(NodeField.TEXT_BY_TEXT_ID.getField())
-                .path(NodeField.BODY.getField());
-    }
-
     public JsonNode buildMainNode(String json) {
         JsonNode rootNode = objectMapperUtil.readTree(json);
 
