@@ -26,7 +26,7 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
         var questionList = jsonNodeUtil.createListFromSingleNode(questionNodes);
 
         List<QuestionAnswerEntity> correctAnswerResponse = new ArrayList<>();
-        findAndBuildQuestionsWithAnswers(answerIds, questionList, correctAnswerResponse);
+        this.findAndBuildQuestionsWithAnswers(answerIds, questionList, correctAnswerResponse);
 
         return correctAnswerResponse;
     }
@@ -36,7 +36,7 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
                                                   List<QuestionAnswerEntity> correctAnswerResponse) {
         questions.stream()
                 .parallel()
-                .forEach(question -> buildAssertions(answerIds, question, correctAnswerResponse));
+                .forEach(question -> this.buildAssertions(answerIds, question, correctAnswerResponse));
     }
 
     private void buildAssertions(List<Integer> answerIds, JsonNode question,
@@ -48,7 +48,7 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
                 .path(NodeField.ASSERTIONS_BY_QUESTION_ID.getField())
                 .path(NodeField.NODES.getField());
 
-        matchAssertionsWithAnswerIds(answerIds, assertionOptionsList, cleanedQuestion, correctAnswerResponse);
+        this.matchAssertionsWithAnswerIds(answerIds, assertionOptionsList, cleanedQuestion, correctAnswerResponse);
     }
 
     private void matchAssertionsWithAnswerIds(List<Integer> answerIds, JsonNode assertionOptions,
@@ -58,7 +58,7 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
 
         assertionList.stream()
                 .parallel()
-                .forEach(assertion -> validateAssertion(answerIds, assertion, question, correctAnswerResponse));
+                .forEach(assertion -> this.validateAssertion(answerIds, assertion, question, correctAnswerResponse));
     }
 
     private void validateAssertion(List<Integer> answerIds, JsonNode assertion,
@@ -66,7 +66,7 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
         answerIds.stream()
                 .parallel()
                 .filter(answerId -> assertion.toString().contains(answerId.toString()))
-                .forEach(answerId -> buildAnswer(question, assertion, answerId, correctAnswerResponse));
+                .forEach(answerId -> this.buildAnswer(question, assertion, answerId, correctAnswerResponse));
     }
 
     private void buildAnswer(JsonNode questionByQuestionId, JsonNode assertion,
