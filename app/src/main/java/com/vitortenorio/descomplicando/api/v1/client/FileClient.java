@@ -62,7 +62,6 @@ public class FileClient implements FileGateway {
         switch (fileType) {
             case XLSX -> this.createAndSaveXlsxFile(singleQuestionModelMap);
             case JSON -> this.createAndSaveJsonFile(singleQuestionModelMap);
-            default -> log.info("File type not found.");
         }
     }
 
