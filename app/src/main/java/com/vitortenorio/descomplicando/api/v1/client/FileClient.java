@@ -54,9 +54,7 @@ public class FileClient implements FileGateway {
 
         var workbook = new XSSFWorkbook();
 
-        singleQuestionModelMap.entrySet()
-                .parallelStream()
-                .forEach(entry -> xlsxFactory.createWorkbookSheet(entry.getKey(), entry.getValue(), workbook));
+        singleQuestionModelMap.forEach((key, value) -> xlsxFactory.createWorkbookSheet(key, value, workbook));
 
         xlsxFactory.saveFile(workbook);
         System.out.println("FileClient.createAndSaveFile => " + new Date());
