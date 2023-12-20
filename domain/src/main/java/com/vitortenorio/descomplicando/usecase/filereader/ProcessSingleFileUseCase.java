@@ -13,6 +13,6 @@ public class ProcessSingleFileUseCase {
     }
 
     public void execute() {
-        fileGateway.processSingleFile();
+        fileGateway.process();
     }
 }

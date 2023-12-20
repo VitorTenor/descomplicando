@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class SingleNodeNodeQuestionClient implements SingleNodeQuestionGateway {
+public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
     private final JsonNodeUtil jsonNodeUtil;
 
     @Override
@@ -68,7 +68,7 @@ public class SingleNodeNodeQuestionClient implements SingleNodeQuestionGateway {
     }
 
     private void buildAnswer(JsonNode questionByQuestionId, JsonNode assertion,
-                             Integer answerId, List<QuestionAnswerEntity> answerResponses) {
+                             Integer answerId, List<QuestionAnswerEntity> correctAnswerResponse) {
 
         final var questionText = jsonNodeUtil.getQuestion(questionByQuestionId).asText();
         final var answerText = jsonNodeUtil.getSingleAnswer(assertion).asText();
@@ -76,6 +76,6 @@ public class SingleNodeNodeQuestionClient implements SingleNodeQuestionGateway {
         final var cleanQuestion = Jsoup.parse(questionText).text();
 
         var answerResponse = new QuestionAnswerEntity(cleanQuestion, answerText, answerId);
-        answerResponses.add(answerResponse);
+        correctAnswerResponse.add(answerResponse);
     }
 }

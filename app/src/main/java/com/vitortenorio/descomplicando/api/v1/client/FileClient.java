@@ -30,8 +30,11 @@ public class FileClient implements FileGateway {
     private String PATH_SINGLE;
 
     @Override
+    public void process() {
+        processSingleFile();
+    }
+
     public void processSingleFile() {
-        System.out.println("FileClient.processSingleFile => " + new Date());
         log.info("Starting to process files in the directory: {}", PATH_SINGLE);
         final var files = new File(PATH_SINGLE).listFiles();
 
@@ -42,6 +45,7 @@ public class FileClient implements FileGateway {
             log.info("No files found in the directory: {}", PATH_SINGLE);
         }
     }
+
 
     private void processFiles(final File[] files) {
         Arrays.stream(files)
@@ -57,7 +61,6 @@ public class FileClient implements FileGateway {
         singleQuestionModelMap.forEach((key, value) -> xlsxFactory.createWorkbookSheet(key, value, workbook));
 
         xlsxFactory.saveFile(workbook);
-        System.out.println("FileClient.createAndSaveFile => " + new Date());
         log.info("File created and saved successfully.");
     }
 }

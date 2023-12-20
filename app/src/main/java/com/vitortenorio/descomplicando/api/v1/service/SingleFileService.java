@@ -2,10 +2,9 @@ package com.vitortenorio.descomplicando.api.v1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.api.v1.client.AnswerClient;
-import com.vitortenorio.descomplicando.api.v1.client.SingleNodeNodeQuestionClient;
+import com.vitortenorio.descomplicando.api.v1.client.SingleNodeQuestionClient;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
 import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
-import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
@@ -22,9 +21,8 @@ import java.util.List;
 public class SingleFileService {
     private final AnswerClient answerClient;
     private final ObjectMapperUtil objectMapperUtil;
-    private final SingleNodeNodeQuestionClient singleNodeQuestionClient;
-    private final JsonFactory jsonFactory;
     private final SingleQuestionData singleQuestionData;
+    private final SingleNodeQuestionClient singleNodeQuestionClient;
 
     public void processSingleFile(final File jsonFile) {
         var singleFileInput = objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
@@ -53,7 +51,6 @@ public class SingleFileService {
 
         return processQuestionAndAnswer(questions, answerIds);
     }
-
 
     private List<Integer> processAnswers(AnswerRequest assertions) {
         var answerEntityList = assertions.toAnswerEntityList();
