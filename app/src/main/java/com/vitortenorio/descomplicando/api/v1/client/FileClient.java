@@ -1,6 +1,7 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
 import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
+import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
@@ -26,6 +27,7 @@ public class FileClient implements FileGateway {
     private final SingleNodeFileService singleNodeFileService;
     private final XlsxFactory xlsxFactory;
     private final SingleQuestionData singleQuestionData;
+    private final JsonFactory jsonFactory;
 
     @Value("${file.path.single}")
     private String PATH_SINGLE;
@@ -61,9 +63,16 @@ public class FileClient implements FileGateway {
             case XLSX:
                 createAndSaveXlsxFile(singleQuestionModelMap);
                 break;
+            case JSON:
+                createAndSaveJsonFile(singleQuestionModelMap);
+                break;
             default:
                 log.info("File type not found.");
         }
+    }
+
+    private void createAndSaveJsonFile(Map<String, List<SingleQuestionModel>> data) {
+        data.forEach(jsonFactory::createJsonFile);
     }
 
     private void createAndSaveXlsxFile(Map<String, List<SingleQuestionModel>> data) {

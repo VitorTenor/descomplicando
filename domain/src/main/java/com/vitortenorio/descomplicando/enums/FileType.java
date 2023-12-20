@@ -9,4 +9,8 @@ public enum FileType {
     FileType(String extension) {
         this.extension = extension;
     }
+
+    public String extension() {
+        return this.extension;
+    }
 }

@@ -1,6 +1,7 @@
 package com.vitortenorio.descomplicando.core.factory;
 
 import com.vitortenorio.descomplicando.core.util.XlsxUtil;
+import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +9,12 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.lang.StringTemplate.STR;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +22,7 @@ public class XlsxFactory {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
     private final FileDirectoryFactory fileDirectoryFactory;
-    private static final String XLSX_EXTENSION = ".xlsx";
+
 
     public void createWorkbookSheet(String valueKey, List<SingleQuestionModel> values, Workbook workbook) {
         var sheet = workbook.createSheet(valueKey);
@@ -56,10 +60,13 @@ public class XlsxFactory {
 
     public void saveFile(Workbook workbook) {
         fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
-        try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + XLSX_EXTENSION)) {
+
+        final var directoryWithFile = STR."\{ PATH_ANSWER }answers\{ FileType.XLSX.extension() }";
+
+        try (FileOutputStream fileOut = new FileOutputStream(directoryWithFile)) {
             workbook.write(fileOut);
         } catch (Exception e) {
-            throw new BusinessException("Error to save workbook.");
+            throw new BusinessException(STR."Error to save workbook. Cause: \{ e.getMessage() }");
         }
     }
 }
