@@ -9,7 +9,7 @@ import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.infra.database.service.SingleQuestionData;
+import com.vitortenorio.descomplicando.infra.database.repository.SingleQuestionDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class SingleNodeFileService {
     private final AnswerClient answerClient;
     private final ObjectMapperUtil objectMapperUtil;
-    private final SingleQuestionData singleQuestionData;
+    private final SingleQuestionDataRepository singleQuestionDataRepository;
     private final SingleNodeQuestionClient singleNodeQuestionClient;
 
     public void processSingleFile(final File jsonFile) {
@@ -45,7 +45,7 @@ public class SingleNodeFileService {
                 )
                 .toList();
 
-        singleQuestionData.addOrCreate(subjectName, data);
+        singleQuestionDataRepository.addOrCreate(subjectName, data);
     }
 
     private List<QuestionAnswerEntity> processQuestionAndAnswerEntity(SingleFileInput singleFileInput) {
