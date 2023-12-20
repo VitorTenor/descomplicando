@@ -46,7 +46,6 @@ public class FileClient implements FileGateway {
         }
     }
 
-
     private void processFiles(final File[] files) {
         Arrays.stream(files)
                 .parallel()
