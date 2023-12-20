@@ -40,7 +40,7 @@ public class XlsxFactory {
     }
 
     private void createHeaderRow(Sheet sheet, Workbook workbook) {
-        CellStyle headerCellStyle = XlsxUtil.createBoldCellStyle(workbook);
+        var headerCellStyle = XlsxUtil.createBoldCellStyle(workbook);
 
         Row headerRow = sheet.createRow(0);
         var headers = List.of("LESSON", "QUESTION", "ANSWER");
