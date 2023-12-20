@@ -1,7 +1,7 @@
-package com.vitortenorio.descomplicando.infra.data.service;
+package com.vitortenorio.descomplicando.infra.database.service;
 
-import com.vitortenorio.descomplicando.infra.data.LocalData;
-import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.database.LocalData;
+import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

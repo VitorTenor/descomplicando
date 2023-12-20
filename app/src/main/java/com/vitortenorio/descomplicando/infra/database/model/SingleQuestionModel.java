@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.infra.data.model;
+package com.vitortenorio.descomplicando.infra.database.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;

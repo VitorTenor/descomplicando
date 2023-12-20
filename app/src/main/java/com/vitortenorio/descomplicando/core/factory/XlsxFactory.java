@@ -2,8 +2,7 @@ package com.vitortenorio.descomplicando.core.factory;
 
 import com.vitortenorio.descomplicando.core.util.XlsxUtil;
 import com.vitortenorio.descomplicando.enums.FileType;
-import com.vitortenorio.descomplicando.exception.BusinessException;
-import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.infra.manager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 

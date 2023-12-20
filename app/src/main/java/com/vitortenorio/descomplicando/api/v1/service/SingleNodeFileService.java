@@ -8,8 +8,8 @@ import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
+import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.database.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
