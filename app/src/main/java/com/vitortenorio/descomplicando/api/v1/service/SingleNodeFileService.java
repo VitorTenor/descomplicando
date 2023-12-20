@@ -27,12 +27,12 @@ public class SingleNodeFileService {
     public void processSingleFile(final File jsonFile) {
         var singleFileInput = objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
 
-        var questionAnswers = processQuestionAndAnswerEntity(singleFileInput);
+        var questionAnswers = this.processQuestionAndAnswerEntity(singleFileInput);
 
         final var lessonName = StringUtil.divideAndCleanWord(singleFileInput.lessonName()).toUpperCase();
         final var subjectName = StringUtil.divideAndCleanWord(singleFileInput.subjectName()).toUpperCase();
 
-        saveInData(questionAnswers, subjectName, lessonName);
+        this.saveInData(questionAnswers, subjectName, lessonName);
     }
 
     private void saveInData(final List<QuestionAnswerEntity> questionAnswers, final String subjectName,
@@ -49,10 +49,10 @@ public class SingleNodeFileService {
     }
 
     private List<QuestionAnswerEntity> processQuestionAndAnswerEntity(SingleFileInput singleFileInput) {
-        var answerIds = processAnswers(singleFileInput.assertions());
+        var answerIds = this.processAnswers(singleFileInput.assertions());
         var questions = singleFileInput.questions();
 
-        return processQuestionAndAnswer(questions, answerIds);
+        return this.processQuestionAndAnswer(questions, answerIds);
     }
 
     private List<Integer> processAnswers(AnswerRequest assertions) {
