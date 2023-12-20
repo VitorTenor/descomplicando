@@ -4,6 +4,7 @@ import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
+import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -29,16 +32,16 @@ public class FileClient implements FileGateway {
 
     @Override
     public void process(FileType fileType) {
-        processSingleNodeFile();
+        processSingleNodeFile(fileType);
     }
 
-    public void processSingleNodeFile() {
+    public void processSingleNodeFile(FileType fileType) {
         log.info("Starting to process files in the directory: {}", PATH_SINGLE);
         final var files = new File(PATH_SINGLE).listFiles();
 
         if (Objects.nonNull(files) && files.length > 0) {
             processFiles(files);
-            createAndSaveFile();
+            createAndSaveFile(fileType);
         } else {
             log.info("No files found in the directory: {}", PATH_SINGLE);
         }
@@ -51,14 +54,23 @@ public class FileClient implements FileGateway {
                 .forEach(singleNodeFileService::processSingleFile);
     }
 
-    private void createAndSaveFile() {
+    private void createAndSaveFile(FileType fileType) {
         final var singleQuestionModelMap = singleQuestionData.getAll();
 
+        switch (fileType) {
+            case XLSX:
+                createAndSaveXlsxFile(singleQuestionModelMap);
+                break;
+            default:
+                log.info("File type not found.");
+        }
+    }
+
+    private void createAndSaveXlsxFile(Map<String, List<SingleQuestionModel>> data) {
         var workbook = new XSSFWorkbook();
 
-        singleQuestionModelMap.forEach((key, value) -> xlsxFactory.createWorkbookSheet(key, value, workbook));
+        data.forEach((key, value) -> xlsxFactory.createWorkbookSheet(key, value, workbook));
 
         xlsxFactory.saveFile(workbook);
-        log.info("File created and saved successfully.");
     }
 }
