@@ -1,5 +1,6 @@
 package com.vitortenorio.descomplicando.infra.data.service;
 
+import com.vitortenorio.descomplicando.infra.LocalData;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import org.springframework.stereotype.Component;
 
@@ -9,22 +10,17 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class SingleQuestionData {
+public class SingleQuestionData implements LocalData<SingleQuestionModel> {
+    private final Map<String, List<SingleQuestionModel>> data = new HashMap<>();
 
-    private Map<String, List<SingleQuestionModel>> singleQuestionModelMap = new HashMap<>();
-
-
-    public void save(String key, List<SingleQuestionModel> singleQuestionModelList) {
-        singleQuestionModelMap.put(key, singleQuestionModelList);
+    @Override
+    public void addOrCreate(String key, List<SingleQuestionModel> data) {
+        List<SingleQuestionModel> questionModelList = this.data.computeIfAbsent(key, k -> new ArrayList<>());
+        data.stream().map(questionModelList::add).toList();
     }
 
-
-    public void addSingleQuestionModel(String lesson, List<SingleQuestionModel> singleQuestionModel) {
-        List<SingleQuestionModel> questionModelList = singleQuestionModelMap.computeIfAbsent(lesson, k -> new ArrayList<>());
-        singleQuestionModel.stream().map(questionModelList::add).toList();
-    }
-
-    public Map<String, List<SingleQuestionModel>> getSingleQuestionModelMap() {
-        return singleQuestionModelMap;
+    @Override
+    public Map<String, List<SingleQuestionModel>> getAll() {
+        return this.data;
     }
 }

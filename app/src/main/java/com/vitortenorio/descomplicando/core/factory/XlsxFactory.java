@@ -1,61 +1,72 @@
 package com.vitortenorio.descomplicando.core.factory;
 
-import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
+import com.vitortenorio.descomplicando.core.util.XlsxUtil;
+import com.vitortenorio.descomplicando.enums.FileType;
+import com.vitortenorio.descomplicando.exception.BusinessException;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.lang.StringTemplate.STR;
 
 @Component
 @RequiredArgsConstructor
 public class XlsxFactory {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
+    private final FileDirectoryFactory fileDirectoryFactory;
 
-    private static final String XLSX_EXTENSION = ".xlsx";
-    private final ObjectMapperUtil objectMapperUtil;
-    private final FileFactory fileFactory;
 
-    public void createAndSaveSingleFile(List<SingleQuestionModel> list, String fileName, Workbook workbook) {
-            Sheet sheet = workbook.createSheet(fileName);
+    public void createWorkbookSheet(String valueKey, List<SingleQuestionModel> values, Workbook workbook) {
+        var sheet = workbook.createSheet(valueKey);
 
-            // Criação de uma fonte com negrito
-            Font headerFont = workbook.createFont();
-            headerFont.setBold(true);
-
-            // Criação de um estilo com a fonte negrito
-            CellStyle headerCellStyle = workbook.createCellStyle();
-            headerCellStyle.setFont(headerFont);
-
-            // Criação do cabeçalho em negrito
-            Row headerRow = sheet.createRow(0);
-            String[] headers = {"LESSON", "QUESTION", "ANSWER"};
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
-                cell.setCellStyle(headerCellStyle);
-            }
-
-            int rowNum = 1;
-            for (SingleQuestionModel answer : list) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(answer.lesson());
-                row.createCell(1).setCellValue(answer.question());
-                row.createCell(2).setCellValue(answer.answer());
-            }
+        createHeaderRow(sheet, workbook);
+        createContentRow(sheet, values);
     }
 
-    public void saveWorkbook(Workbook workbook) {
-        // Salvamento do arquivo
-        fileFactory.validateAndCreateDirectory(PATH_ANSWER);
-        try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + ".xlsx")) {
+    private void createContentRow(Sheet sheet, List<SingleQuestionModel> values) {
+        var rowNum = new AtomicInteger(1);
+        values.forEach(value -> addContent(value, sheet, rowNum));
+    }
+
+    private void addContent(final SingleQuestionModel value, Sheet sheet, AtomicInteger rowNum) {
+        var row = sheet.createRow(rowNum.getAndIncrement());
+        row.createCell(0).setCellValue(value.lesson());
+        row.createCell(1).setCellValue(value.question());
+        row.createCell(2).setCellValue(value.answer());
+    }
+
+    private void createHeaderRow(Sheet sheet, Workbook workbook) {
+        var headerCellStyle = XlsxUtil.createBoldCellStyle(workbook);
+
+        Row headerRow = sheet.createRow(0);
+        var headers = List.of("LESSON", "QUESTION", "ANSWER");
+
+        headers.forEach(header -> addHeader(headerRow, headerCellStyle, header, headers.indexOf(header)));
+    }
+
+    private void addHeader(Row headerRow, CellStyle headerCellStyle, String header, int index) {
+        Cell cell = headerRow.createCell(index);
+        cell.setCellValue(header);
+        cell.setCellStyle(headerCellStyle);
+    }
+
+    public void saveFile(Workbook workbook) {
+        fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
+
+        final var directoryWithFile = STR."\{ PATH_ANSWER }answers\{ FileType.XLSX.extension() }";
+
+        try (FileOutputStream fileOut = new FileOutputStream(directoryWithFile)) {
             workbook.write(fileOut);
         } catch (Exception e) {
-            throw new RuntimeException("Error to save workbook.");
+            throw new BusinessException(STR."Error to save workbook. Cause: \{ e.getMessage() }");
         }
     }
 }

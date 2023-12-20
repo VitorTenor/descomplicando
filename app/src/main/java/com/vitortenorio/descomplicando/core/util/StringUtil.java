@@ -20,10 +20,10 @@ public class StringUtil {
         return new String(charArray);
     }
 
-    public static String divideAndCleanWord(String word) {
-        String[] words = divideWordByKey(word, " ");
+    public static String divideAndCleanWord(final String word) {
+        final var words = divideWordByKey(word, "-");
 
-        StringBuilder cleanWord = new StringBuilder();
+        var cleanWord = new StringBuilder();
         for (String s : words) {
             cleanWord.append(cleanWord(s)).append(" ");
         }

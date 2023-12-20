@@ -1,5 +1,6 @@
 package com.vitortenorio.descomplicando.api.v1.trigger;
 
+import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.usecase.filereader.ProcessSingleFileUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,6 @@ public class ProcessFileTrigger {
 
     @PostConstruct
     public void processFile() {
-        processSingleFileUseCase.execute();
+        processSingleFileUseCase.execute(FileType.XLSX);
     }
 }
