@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -45,10 +46,14 @@ public class JsonNodeUtil {
     }
 
     public List<JsonNode> createListFromSingleNode(JsonNode nodes) {
-        List<JsonNode> nodesList = new ArrayList<>();
-        for (JsonNode node : nodes) {
-            nodesList.add(node);
+        if (Objects.isNull(nodes)) {
+            throw new IllegalArgumentException("Node is null");
+        } else {
+            List<JsonNode> nodesList = new ArrayList<>();
+            for (JsonNode node : nodes) {
+                nodesList.add(node);
+            }
+            return nodesList;
         }
-        return nodesList;
     }
 }

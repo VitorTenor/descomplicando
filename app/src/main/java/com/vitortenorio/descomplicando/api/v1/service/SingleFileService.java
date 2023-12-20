@@ -2,13 +2,12 @@ package com.vitortenorio.descomplicando.api.v1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.api.v1.client.AnswerClient;
-import com.vitortenorio.descomplicando.api.v1.client.SingleQuestionClient;
+import com.vitortenorio.descomplicando.api.v1.client.SingleNodeNodeQuestionClient;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
 import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
-import com.vitortenorio.descomplicando.entity.AnswerEntity;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
@@ -23,7 +22,7 @@ import java.util.List;
 public class SingleFileService {
     private final AnswerClient answerClient;
     private final ObjectMapperUtil objectMapperUtil;
-    private final SingleQuestionClient singleQuestionClient;
+    private final SingleNodeNodeQuestionClient singleNodeQuestionClient;
     private final JsonFactory jsonFactory;
     private final SingleQuestionData singleQuestionData;
 
@@ -62,6 +61,6 @@ public class SingleFileService {
     }
 
     private List<QuestionAnswerEntity> processQuestionAndAnswer(JsonNode questions, List<Integer> answerIds) {
-        return singleQuestionClient.processQuestionAndAnswer(questions.toString(), answerIds);
+        return singleNodeQuestionClient.processQuestionAndAnswer(questions.toString(), answerIds);
     }
 }

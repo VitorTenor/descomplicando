@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
@@ -21,9 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class FileClient implements FileGateway {
 
-    private final FileDirectoryFactory fileDirectoryFactory;
     private final SingleFileService singleFileService;
-    private final JsonFactory jsonFactory;
     private final XlsxFactory xlsxFactory;
     private final SingleQuestionData singleQuestionData;
 
@@ -32,6 +31,8 @@ public class FileClient implements FileGateway {
 
     @Override
     public void processSingleFile() {
+        System.out.println("FileClient.processSingleFile => " + new Date());
+        log.info("Starting to process files in the directory: {}", PATH_SINGLE);
         final var files = new File(PATH_SINGLE).listFiles();
 
         if (Objects.nonNull(files) && files.length > 0) {
@@ -42,8 +43,9 @@ public class FileClient implements FileGateway {
         }
     }
 
-    private void processFiles(final File[] files){
-        Arrays.stream(files).parallel()
+    private void processFiles(final File[] files) {
+        Arrays.stream(files)
+                .parallel()
                 .forEach(singleFileService::processSingleFile);
     }
 
@@ -52,12 +54,12 @@ public class FileClient implements FileGateway {
 
         var workbook = new XSSFWorkbook();
 
-        for (var entry : singleQuestionModelMap.entrySet()) {
-            final var valueKey = entry.getKey();
-            final var value = entry.getValue();
-            xlsxFactory.createWorkbookSheet(value, valueKey, workbook);
-        }
+        singleQuestionModelMap.entrySet()
+                .parallelStream()
+                .forEach(entry -> xlsxFactory.createWorkbookSheet(entry.getKey(), entry.getValue(), workbook));
 
         xlsxFactory.saveFile(workbook);
+        System.out.println("FileClient.createAndSaveFile => " + new Date());
+        log.info("File created and saved successfully.");
     }
 }
