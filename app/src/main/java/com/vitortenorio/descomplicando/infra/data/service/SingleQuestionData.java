@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.infra.data.service;
 
-import com.vitortenorio.descomplicando.infra.LocalData;
+import com.vitortenorio.descomplicando.infra.data.LocalData;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import org.springframework.stereotype.Component;
 

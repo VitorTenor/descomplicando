@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.infra;
+package com.vitortenorio.descomplicando.infra.data;
 
 
 import java.util.List;
