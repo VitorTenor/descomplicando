@@ -1,6 +1,6 @@
 package com.vitortenorio.descomplicando.core.factory;
 
-import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
+import com.vitortenorio.descomplicando.core.util.XlsxUtil;
 import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -15,44 +15,42 @@ import java.util.List;
 public class XlsxFactory {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
-
-    private static final String XLSX_EXTENSION = ".xlsx";
-    private final ObjectMapperUtil objectMapperUtil;
     private final FileDirectoryFactory fileDirectoryFactory;
+    private static final String XLSX_EXTENSION = ".xlsx";
 
-    public void createAndSaveSingleFile(List<SingleQuestionModel> list, String fileName, Workbook workbook) {
-            Sheet sheet = workbook.createSheet(fileName);
+    public void createWorkbookSheet(List<SingleQuestionModel> values, String valueKey, Workbook workbook) {
+            var sheet = workbook.createSheet(valueKey);
 
-            // Criação de uma fonte com negrito
-            Font headerFont = workbook.createFont();
-            headerFont.setBold(true);
-
-            // Criação de um estilo com a fonte negrito
-            CellStyle headerCellStyle = workbook.createCellStyle();
-            headerCellStyle.setFont(headerFont);
-
-            // Criação do cabeçalho em negrito
-            Row headerRow = sheet.createRow(0);
-            String[] headers = {"LESSON", "QUESTION", "ANSWER"};
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
-                cell.setCellStyle(headerCellStyle);
-            }
-
-            int rowNum = 1;
-            for (SingleQuestionModel answer : list) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(answer.lesson());
-                row.createCell(1).setCellValue(answer.question());
-                row.createCell(2).setCellValue(answer.answer());
-            }
+            createHeaderRow(sheet, workbook);
+            createContentRow(sheet, values);
     }
 
-    public void saveWorkbook(Workbook workbook) {
-        // Salvamento do arquivo
+    private void createContentRow(Sheet sheet, List<SingleQuestionModel> values) {
+        int rowNum = 1;
+        for (SingleQuestionModel value : values) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(value.lesson());
+            row.createCell(1).setCellValue(value.question());
+            row.createCell(2).setCellValue(value.answer());
+        }
+    }
+
+    private void createHeaderRow(Sheet sheet, Workbook workbook) {
+        CellStyle headerCellStyle = XlsxUtil.createBoldCellStyle(workbook);
+
+        Row headerRow = sheet.createRow(0);
+        var headers = List.of("LESSON", "QUESTION", "ANSWER");
+
+        headers.forEach(header -> {
+            Cell cell = headerRow.createCell(headers.indexOf(header));
+            cell.setCellValue(header);
+            cell.setCellStyle(headerCellStyle);
+        });
+    }
+
+    public void saveFile(Workbook workbook) {
         fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
-        try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + ".xlsx")) {
+        try (FileOutputStream fileOut = new FileOutputStream(PATH_ANSWER + "answers" + XLSX_EXTENSION)) {
             workbook.write(fileOut);
         } catch (Exception e) {
             throw new RuntimeException("Error to save workbook.");

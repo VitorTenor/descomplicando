@@ -5,18 +5,18 @@ import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.core.factory.FileDirectoryFactory;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
-import com.vitortenorio.descomplicando.infra.data.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.infra.data.service.SingleQuestionData;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Workbook;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Objects;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FileClient implements FileGateway {
@@ -32,31 +32,32 @@ public class FileClient implements FileGateway {
 
     @Override
     public void processSingleFile() {
-        File folder = fileDirectoryFactory.mountFile(PATH_SINGLE);
-        File[] files = folder.listFiles();
+        final var files = new File(PATH_SINGLE).listFiles();
 
-        if (files != null && files.length > 0) {
-            for (File arquivoJson : files) {
-                singleFileService.processAllSingleFile(arquivoJson);
-            }
+        if (Objects.nonNull(files) && files.length > 0) {
+            processFiles(files);
             createAndSaveFile();
         } else {
-            System.out.println("Doesn't exist files to process.");
+            log.info("No files found in the directory: {}", PATH_SINGLE);
         }
+    }
+
+    private void processFiles(final File[] files){
+        Arrays.stream(files).parallel()
+                .forEach(singleFileService::processSingleFile);
     }
 
     private void createAndSaveFile() {
-        Map<String, List<SingleQuestionModel>> singleQuestionModelMap = singleQuestionData.getSingleQuestionModelMap();
+        final var singleQuestionModelMap = singleQuestionData.getAll();
 
-        Workbook workbook = new XSSFWorkbook();
-        for (Map.Entry<String, List<SingleQuestionModel>> entry : singleQuestionModelMap.entrySet()) {
-            String folderName = entry.getKey();
-            List<SingleQuestionModel> singleQuestionModelList = entry.getValue();
-            xlsxFactory.createAndSaveSingleFile(singleQuestionModelList, folderName, workbook);
+        var workbook = new XSSFWorkbook();
+
+        for (var entry : singleQuestionModelMap.entrySet()) {
+            final var valueKey = entry.getKey();
+            final var value = entry.getValue();
+            xlsxFactory.createWorkbookSheet(value, valueKey, workbook);
         }
 
-        xlsxFactory.saveWorkbook(workbook);
-
+        xlsxFactory.saveFile(workbook);
     }
-
 }

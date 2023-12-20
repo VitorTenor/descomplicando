@@ -10,21 +10,14 @@ import java.util.Map;
 
 @Component
 public class SingleQuestionData {
+    private final Map<String, List<SingleQuestionModel>> singleQuestionModelMap = new HashMap<>();
 
-    private Map<String, List<SingleQuestionModel>> singleQuestionModelMap = new HashMap<>();
-
-
-    public void save(String key, List<SingleQuestionModel> singleQuestionModelList) {
-        singleQuestionModelMap.put(key, singleQuestionModelList);
+    public void addOrCreate(String key, List<SingleQuestionModel> data) {
+        List<SingleQuestionModel> questionModelList = singleQuestionModelMap.computeIfAbsent(key, k -> new ArrayList<>());
+        data.stream().map(questionModelList::add).toList();
     }
 
-
-    public void addSingleQuestionModel(String lesson, List<SingleQuestionModel> singleQuestionModel) {
-        List<SingleQuestionModel> questionModelList = singleQuestionModelMap.computeIfAbsent(lesson, k -> new ArrayList<>());
-        singleQuestionModel.stream().map(questionModelList::add).toList();
-    }
-
-    public Map<String, List<SingleQuestionModel>> getSingleQuestionModelMap() {
+    public Map<String, List<SingleQuestionModel>> getAll() {
         return singleQuestionModelMap;
     }
 }

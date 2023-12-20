@@ -27,34 +27,37 @@ public class SingleFileService {
     private final JsonFactory jsonFactory;
     private final SingleQuestionData singleQuestionData;
 
-    public void processAllSingleFile(File jsonFile) {
-        SingleFileInput singleFileInput = readSingleFile(jsonFile);
-        List<Integer> answerIds = processAnswers(singleFileInput.assertions());
-        List<QuestionAnswerEntity> questionAnswers = processQuestionAndAnswer(singleFileInput.questions(), answerIds);
+    public void processSingleFile(final File jsonFile) {
+        var singleFileInput = objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
 
-        String fileName = StringUtil.divideAndCleanWord(singleFileInput.lessonName().toUpperCase());
+        var questionAnswers = processQuestionAndAnswerEntity(singleFileInput);
 
-        String folderName = StringUtil.divideAndCleanWord(singleFileInput.subjectName().toUpperCase()) ; //+ "\\";
+        String lessonName = StringUtil.divideAndCleanWord(singleFileInput.lessonName()).toUpperCase();
+        String subjectName = StringUtil.divideAndCleanWord(singleFileInput.subjectName()).toUpperCase();
 
-//        jsonFactory.createAndSaveFile(questionAnswers, folderName, fileName);
-
-        saveInData(questionAnswers, folderName, fileName);
+        saveInData(questionAnswers, subjectName, lessonName);
     }
 
-    private void saveInData(List<QuestionAnswerEntity> questionAnswers, String folderName, String fileName) {
-        List<SingleQuestionModel> singleQuestionModelList = questionAnswers.stream().map(
-                questionAnswerEntity -> SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, fileName)).toList();
+    private void saveInData(final List<QuestionAnswerEntity> questionAnswers, final String subjectName,
+                            final String lessonName) {
 
-        singleQuestionData.addSingleQuestionModel(folderName, singleQuestionModelList);
+        final var data = questionAnswers.stream().parallel().map(
+                questionAnswerEntity -> SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, lessonName)
+        ).toList();
+
+        singleQuestionData.addOrCreate(subjectName, data);
     }
 
+    private List<QuestionAnswerEntity> processQuestionAndAnswerEntity(SingleFileInput singleFileInput) {
+        var answerIds = processAnswers(singleFileInput.assertions());
+        var questions = singleFileInput.questions();
 
-    private SingleFileInput readSingleFile(File jsonFile) {
-        return objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
+        return processQuestionAndAnswer(questions, answerIds);
     }
+
 
     private List<Integer> processAnswers(AnswerRequest assertions) {
-        List<AnswerEntity> answerEntityList = assertions.toAnswerEntityList();
+        var answerEntityList = assertions.toAnswerEntityList();
         return answerClient.processTrueAnswer(answerEntityList);
     }
 
