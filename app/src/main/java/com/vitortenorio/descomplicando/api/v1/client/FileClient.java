@@ -41,8 +41,8 @@ public class FileClient implements FileGateway {
         final var files = new File(PATH_SINGLE).listFiles();
 
         if (Objects.nonNull(files) && files.length > 0) {
-            processFiles(files);
-            createAndSaveFile(fileType);
+            this.processFiles(files);
+            this.createAndSaveFile(fileType);
         }
     }
 
