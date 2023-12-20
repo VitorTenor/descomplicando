@@ -13,7 +13,7 @@ import java.util.List;
 public class AnswerClient implements AnswerGateway {
     @Override
     public List<Integer> processTrueAnswer(List<AnswerEntity> answer) {
-        List<AnswerEntity> correctAnswer = removeIncorrect(answer);
+        var correctAnswer = this.removeIncorrect(answer);
 
         return correctAnswer.stream()
                 .map(AnswerEntity::id)
