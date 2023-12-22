@@ -1,9 +1,8 @@
-package com.vitortenorio.descomplicando.infra.database.service;
+package com.vitortenorio.descomplicando.infra.database.storage;
 
 import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface SingleQuestionData {
     void addOrCreate(String key, List<SingleQuestionModel> data);

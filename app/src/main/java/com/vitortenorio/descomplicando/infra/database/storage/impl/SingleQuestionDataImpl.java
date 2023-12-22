@@ -1,15 +1,13 @@
-package com.vitortenorio.descomplicando.infra.database.service;
+package com.vitortenorio.descomplicando.infra.database.storage.impl;
 
 import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infra.database.storage.SingleQuestionData;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
-public abstract class SingleQuestionDataImpl implements SingleQuestionData {
+public class SingleQuestionDataImpl implements SingleQuestionData {
     private final Map<String, List<SingleQuestionModel>> data = new HashMap<>();
 
     public void addOrCreate(String key, List<SingleQuestionModel> data) {
