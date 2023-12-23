@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class HashMapDataAbstract<ID, T> implements HashMapRepository<ID, T> {
-    private final Map<ID, T> dataMap = new HashMap<>();
+    protected final Map<ID, T> dataMap = new HashMap<>();
 
     @Override
     public void add(ID id, T data) {
