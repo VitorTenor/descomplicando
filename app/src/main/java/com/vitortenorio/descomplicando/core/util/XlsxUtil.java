@@ -1,8 +1,6 @@
 package com.vitortenorio.descomplicando.core.util;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 
 public class XlsxUtil {
     public static Font createBoldFont(final Workbook workbook) {
