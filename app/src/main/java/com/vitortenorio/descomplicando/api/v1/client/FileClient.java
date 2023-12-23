@@ -1,12 +1,13 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
+import com.vitortenorio.descomplicando.api.v1.repository.SingleQuestionRepositoryImpl;
 import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
+import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.database.repository.SingleQuestionRepository;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
-import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.infra.database.repository.SingleQuestionDataRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,7 +27,7 @@ public class FileClient implements FileGateway {
 
     private final SingleNodeFileService singleNodeFileService;
     private final XlsxFactory xlsxFactory;
-    private final SingleQuestionDataRepository singleQuestionDataRepository;
+    private final SingleQuestionRepositoryImpl singleQuestionDataRepository;
     private final JsonFactory jsonFactory;
 
     @Value("${file.path.single}")
@@ -53,7 +54,7 @@ public class FileClient implements FileGateway {
     }
 
     private void createAndSaveFile(FileType fileType) {
-        final var singleQuestionModelMap = singleQuestionDataRepository.getAll();
+        final var singleQuestionModelMap = singleQuestionDataRepository.getAllMap();
 
         switch (fileType) {
             case XLSX -> this.createAndSaveXlsxFile(singleQuestionModelMap);

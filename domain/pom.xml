@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>descomplicando-domain</name>
+    <name>descomplicando</name>
     <description>Assertion app</description>
     <parent>
         <groupId>com.vitortenorio.descomplicando</groupId>

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.api.v1.client.AnswerClient;
 import com.vitortenorio.descomplicando.api.v1.client.SingleNodeQuestionClient;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
+import com.vitortenorio.descomplicando.api.v1.repository.SingleQuestionRepositoryImpl;
 import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
-import com.vitortenorio.descomplicando.core.util.ObjectMapperUtil;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
+import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.infra.database.repository.SingleQuestionDataRepository;
+import com.vitortenorio.descomplicando.filemanager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SingleNodeFileService {
     private final AnswerClient answerClient;
-    private final ObjectMapperUtil objectMapperUtil;
-    private final SingleQuestionDataRepository singleQuestionDataRepository;
+    private final FileManager fileManager;
+    private final SingleQuestionRepositoryImpl singleQuestionDataRepository;
     private final SingleNodeQuestionClient singleNodeQuestionClient;
 
     public void processSingleFile(final File jsonFile) {
-        var singleFileInput = objectMapperUtil.readValue(jsonFile, SingleFileInput.class);
+        var singleFileInput = fileManager.readValue(jsonFile, SingleFileInput.class);
 
         var questionAnswers = this.processQuestionAndAnswerEntity(singleFileInput);
 
@@ -41,7 +41,12 @@ public class SingleNodeFileService {
         final var data = questionAnswers.stream()
                 .parallel()
                 .map(questionAnswerEntity ->
-                        SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, lessonName)
+                        new SingleQuestionModel(
+                                questionAnswerEntity.question(),
+                                questionAnswerEntity.answer(),
+                                questionAnswerEntity.answerId(),
+                                lessonName
+                        )
                 )
                 .toList();
 

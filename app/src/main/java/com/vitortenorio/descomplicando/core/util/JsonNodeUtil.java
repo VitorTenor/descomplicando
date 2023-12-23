@@ -2,6 +2,7 @@ package com.vitortenorio.descomplicando.core.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.enums.NodeField;
+import com.vitortenorio.descomplicando.filemanager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class JsonNodeUtil {
-    private final ObjectMapperUtil objectMapperUtil;
+    private final FileManager fileManager;
 
     public JsonNode getQuestion(JsonNode jsonNode) {
         return jsonNode.path(NodeField.CONTENTS_BY_QUESTION_ID.getField())
@@ -29,7 +30,7 @@ public class JsonNodeUtil {
     }
 
     public JsonNode buildMainNode(String json) {
-        JsonNode rootNode = objectMapperUtil.readTree(json);
+        JsonNode rootNode = fileManager.readTree(json);
 
         return rootNode.path(NodeField.DATA.getField())
                 .path(NodeField.LIST_BY_SLUG.getField())

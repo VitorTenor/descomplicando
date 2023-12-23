@@ -1,9 +1,9 @@
 package com.vitortenorio.descomplicando.core.factory;
 
 import com.vitortenorio.descomplicando.core.util.XlsxUtil;
+import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.enums.FileType;
-import com.vitortenorio.descomplicando.infra.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.infra.manager.FileManager;
+import com.vitortenorio.descomplicando.filemanager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,14 +13,11 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.lang.StringTemplate.STR;
-
 @Component
 @RequiredArgsConstructor
 public class XlsxFactory {
     @Value("${file.path.answer}")
     private String PATH_ANSWER;
-    private final FileDirectoryFactory fileDirectoryFactory;
     private final FileManager fileManager;
 
     public void createWorkbookSheet(String valueKey, List<SingleQuestionModel> values, Workbook workbook) {
@@ -58,7 +55,7 @@ public class XlsxFactory {
     }
 
     public void saveFile(Workbook workbook) {
-        fileDirectoryFactory.validateAndCreateDirectory(PATH_ANSWER);
+        fileManager.validateAndCreateDirectory(PATH_ANSWER);
 
         final var directoryWithFile = STR."\{ PATH_ANSWER }answers\{ FileType.XLSX.extension() }";
         var file = new File(directoryWithFile);

@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.core.util;
+package com.vitortenorio.descomplicando.filemanager.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,17 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ObjectMapperUtil {
+public abstract class ObjectMapperAbstract {
     private final ObjectMapper objectMapper = configureJsonObjectMapper();
 
     public JsonNode readTree(String json) {
         try {
-            return objectMapper.readTree(json);
+            return this.objectMapper.readTree(json);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -28,7 +27,7 @@ public class ObjectMapperUtil {
 
     public <T> T readValue(File file, Class<T> clazz) {
         try {
-            return objectMapper.readValue(file, clazz);
+            return this.objectMapper.readValue(file, clazz);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessException(e.getMessage());

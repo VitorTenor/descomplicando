@@ -10,8 +10,8 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class AnswerClient implements AnswerGateway {
-    @Override
+public class AnswerClient  {
+//    @Override
     public List<Integer> processTrueAnswer(List<AnswerEntity> answer) {
         var correctAnswer = this.removeIncorrect(answer);
 
