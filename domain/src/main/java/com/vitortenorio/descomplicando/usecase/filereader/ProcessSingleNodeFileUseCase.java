@@ -6,10 +6,10 @@ import com.vitortenorio.descomplicando.gateway.FileGateway;
 import javax.inject.Named;
 
 @Named
-public class ProcessSingleFileUseCase {
+public class ProcessSingleNodeFileUseCase {
     private final FileGateway fileGateway;
 
-    public ProcessSingleFileUseCase(FileGateway fileGateway) {
+    public ProcessSingleNodeFileUseCase(FileGateway fileGateway) {
         this.fileGateway = fileGateway;
     }
 
