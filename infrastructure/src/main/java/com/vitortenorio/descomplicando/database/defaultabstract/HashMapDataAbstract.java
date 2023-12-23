@@ -1,10 +1,13 @@
-package com.vitortenorio.descomplicando.database.service;
+package com.vitortenorio.descomplicando.database.defaultabstract;
 
 import com.vitortenorio.descomplicando.database.repository.HashMapRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public abstract class HashMapDataService<ID, T> implements HashMapRepository<ID, T> {
+public abstract class HashMapDataAbstract<ID, T> implements HashMapRepository<ID, T> {
     private final Map<ID, T> dataMap = new HashMap<>();
 
     @Override

@@ -1,11 +1,10 @@
 package com.vitortenorio.descomplicando.api.v1.client;
 
-import com.vitortenorio.descomplicando.api.v1.repository.SingleQuestionRepositoryImpl;
 import com.vitortenorio.descomplicando.api.v1.service.SingleNodeFileService;
 import com.vitortenorio.descomplicando.core.factory.JsonFactory;
 import com.vitortenorio.descomplicando.core.factory.XlsxFactory;
 import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.database.repository.SingleQuestionRepository;
+import com.vitortenorio.descomplicando.database.repository.impl.SingleQuestionRepositoryImpl;
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.gateway.FileGateway;
 import lombok.RequiredArgsConstructor;
