@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.api.v1.client.AnswerClient;
 import com.vitortenorio.descomplicando.api.v1.client.SingleNodeQuestionClient;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
-import com.vitortenorio.descomplicando.api.v1.request.AnswerRequest;
+import com.vitortenorio.descomplicando.api.v1.input.AnswerInput;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
 import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.database.repository.impl.SingleQuestionRepositoryImpl;
@@ -60,7 +60,7 @@ public class SingleNodeFileService {
         return this.processQuestionAndAnswer(questions, answerIds);
     }
 
-    private List<Integer> processAnswers(AnswerRequest assertions) {
+    private List<Integer> processAnswers(AnswerInput assertions) {
         var answerEntityList = assertions.toAnswerEntityList();
         return answerClient.processTrueAnswer(answerEntityList);
     }
