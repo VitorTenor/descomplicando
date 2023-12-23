@@ -41,13 +41,7 @@ public class SingleNodeFileService {
         final var data = questionAnswers.stream()
                 .parallel()
                 .map(questionAnswerEntity ->
-                        new SingleQuestionModel(
-                                questionAnswerEntity.question(),
-                                questionAnswerEntity.answer(),
-                                questionAnswerEntity.answerId(),
-                                lessonName
-                        )
-                )
+                        SingleQuestionModel.fromQuestionAnswerEntity(questionAnswerEntity, lessonName))
                 .toList();
 
         singleQuestionDataRepository.addOrCreate(subjectName, data);
