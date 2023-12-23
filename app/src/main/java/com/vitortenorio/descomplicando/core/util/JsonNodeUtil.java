@@ -14,26 +14,26 @@ public class JsonNodeUtil {
     private final FileManager fileManager;
 
     public JsonNode getQuestion(JsonNode jsonNode) {
-        return jsonNode.path(NodeField.CONTENTS_BY_QUESTION_ID.getField())
-                .path(NodeField.NODES.getField()).get(0)
-                .path(NodeField.TEXT_BY_TEXT_ID.getField())
-                .path(NodeField.BODY.getField());
+        return jsonNode.path(NodeField.CONTENTS_BY_QUESTION_ID.field())
+                .path(NodeField.NODES.field()).get(0)
+                .path(NodeField.TEXT_BY_TEXT_ID.field())
+                .path(NodeField.BODY.field());
     }
 
     public JsonNode getSingleAnswer(JsonNode jsonNode) {
-        return jsonNode.path(NodeField.CONTENTS_BY_ASSERTION_ID.getField())
-                .path(NodeField.NODES.getField()).get(0)
-                .path(NodeField.TEXT_BY_TEXT_ID.getField())
-                .path(NodeField.BODY.getField());
+        return jsonNode.path(NodeField.CONTENTS_BY_ASSERTION_ID.field())
+                .path(NodeField.NODES.field()).get(0)
+                .path(NodeField.TEXT_BY_TEXT_ID.field())
+                .path(NodeField.BODY.field());
     }
 
     public JsonNode buildMainNode(String json) {
         JsonNode rootNode = fileManager.readTree(json);
 
-        return rootNode.path(NodeField.DATA.getField())
-                .path(NodeField.LIST_BY_SLUG.getField())
-                .path(NodeField.LIST_ITEMS_BY_LIST_ID.getField())
-                .path(NodeField.NODES.getField());
+        return rootNode.path(NodeField.DATA.field())
+                .path(NodeField.LIST_BY_SLUG.field())
+                .path(NodeField.LIST_ITEMS_BY_LIST_ID.field())
+                .path(NodeField.NODES.field());
 
     }
 

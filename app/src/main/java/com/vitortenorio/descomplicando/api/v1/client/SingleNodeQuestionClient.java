@@ -40,11 +40,11 @@ public class SingleNodeQuestionClient implements SingleNodeQuestionGateway {
     private void buildAssertions(List<Integer> answerIds, JsonNode question,
                                  List<QuestionAnswerEntity> correctAnswerResponse) {
 
-        JsonNode cleanedQuestion = question.path(NodeField.QUESTION_BY_QUESTION_ID.getField());
+        JsonNode cleanedQuestion = question.path(NodeField.QUESTION_BY_QUESTION_ID.field());
 
         JsonNode assertionOptionsList = cleanedQuestion
-                .path(NodeField.ASSERTIONS_BY_QUESTION_ID.getField())
-                .path(NodeField.NODES.getField());
+                .path(NodeField.ASSERTIONS_BY_QUESTION_ID.field())
+                .path(NodeField.NODES.field());
 
         this.matchAssertionsWithAnswerIds(answerIds, assertionOptionsList, cleanedQuestion, correctAnswerResponse);
     }

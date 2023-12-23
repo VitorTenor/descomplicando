@@ -20,7 +20,7 @@ public enum NodeField {
         this.field = field;
     }
 
-    public String getField() {
+    public String field() {
         return field;
     }
 }
