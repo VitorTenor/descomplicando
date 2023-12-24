@@ -1,7 +1,7 @@
-package com.vitortenorio.descomplicando.filemanager.service;
+package com.vitortenorio.descomplicando.infrastructure.filemanager.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.vitortenorio.descomplicando.filemanager.util.ObjectMapperAbstract;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.util.ObjectMapperAbstract;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

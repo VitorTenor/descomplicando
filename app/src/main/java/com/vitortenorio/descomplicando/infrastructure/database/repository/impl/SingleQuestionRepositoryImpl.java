@@ -1,7 +1,7 @@
-package com.vitortenorio.descomplicando.database.repository.impl;
+package com.vitortenorio.descomplicando.infrastructure.database.repository.impl;
 
-import com.vitortenorio.descomplicando.database.defaultabstract.HashMapDataAbstract;
-import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infrastructure.database.defaultabstract.HashMapDataAbstract;
+import com.vitortenorio.descomplicando.infrastructure.database.model.SingleQuestionModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

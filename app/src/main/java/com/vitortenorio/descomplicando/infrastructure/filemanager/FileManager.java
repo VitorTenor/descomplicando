@@ -1,12 +1,11 @@
-package com.vitortenorio.descomplicando.filemanager;
+package com.vitortenorio.descomplicando.infrastructure.filemanager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vitortenorio.descomplicando.enums.FileType;
-import com.vitortenorio.descomplicando.filemanager.service.FileDirectoryService;
-import com.vitortenorio.descomplicando.filemanager.service.FileReaderService;
-import com.vitortenorio.descomplicando.filemanager.service.FileWriterService;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.service.FileDirectoryService;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.service.FileReaderService;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.service.FileWriterService;
 import lombok.RequiredArgsConstructor;
-import org.apache.xpath.functions.FuncStringLength;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

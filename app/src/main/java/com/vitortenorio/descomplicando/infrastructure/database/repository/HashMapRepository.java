@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.database.repository;
+package com.vitortenorio.descomplicando.infrastructure.database.repository;
 
 import java.util.Map;
 

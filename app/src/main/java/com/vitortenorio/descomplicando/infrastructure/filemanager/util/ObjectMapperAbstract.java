@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.filemanager.util;
+package com.vitortenorio.descomplicando.infrastructure.filemanager.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

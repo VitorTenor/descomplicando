@@ -1,6 +1,6 @@
-package com.vitortenorio.descomplicando.database.defaultabstract;
+package com.vitortenorio.descomplicando.infrastructure.database.defaultabstract;
 
-import com.vitortenorio.descomplicando.database.repository.HashMapRepository;
+import com.vitortenorio.descomplicando.infrastructure.database.repository.HashMapRepository;
 
 import java.util.*;
 

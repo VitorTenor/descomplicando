@@ -1,4 +1,4 @@
-package com.vitortenorio.descomplicando.filemanager.service;
+package com.vitortenorio.descomplicando.infrastructure.filemanager.service;
 
 import com.vitortenorio.descomplicando.exception.BusinessException;
 import org.springframework.stereotype.Service;

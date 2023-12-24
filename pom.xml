@@ -18,6 +18,5 @@
     <modules>
         <module>app</module>
         <module>domain</module>
-        <module>infrastructure</module>
     </modules>
 </project>

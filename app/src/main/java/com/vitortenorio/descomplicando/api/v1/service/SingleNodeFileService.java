@@ -6,10 +6,10 @@ import com.vitortenorio.descomplicando.api.v1.client.SingleNodeQuestionClient;
 import com.vitortenorio.descomplicando.api.v1.input.SingleFileInput;
 import com.vitortenorio.descomplicando.api.v1.input.AnswerInput;
 import com.vitortenorio.descomplicando.core.util.StringUtil;
-import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
-import com.vitortenorio.descomplicando.database.repository.impl.SingleQuestionRepositoryImpl;
+import com.vitortenorio.descomplicando.infrastructure.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infrastructure.database.repository.impl.SingleQuestionRepositoryImpl;
 import com.vitortenorio.descomplicando.entity.QuestionAnswerEntity;
-import com.vitortenorio.descomplicando.filemanager.FileManager;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

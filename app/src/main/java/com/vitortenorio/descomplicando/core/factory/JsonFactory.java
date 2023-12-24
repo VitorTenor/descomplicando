@@ -1,8 +1,8 @@
 package com.vitortenorio.descomplicando.core.factory;
 
-import com.vitortenorio.descomplicando.database.model.SingleQuestionModel;
+import com.vitortenorio.descomplicando.infrastructure.database.model.SingleQuestionModel;
 import com.vitortenorio.descomplicando.enums.FileType;
-import com.vitortenorio.descomplicando.filemanager.FileManager;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

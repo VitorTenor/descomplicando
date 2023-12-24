@@ -1,8 +1,8 @@
-package com.vitortenorio.descomplicando.filemanager.service;
+package com.vitortenorio.descomplicando.infrastructure.filemanager.service;
 
 import com.vitortenorio.descomplicando.enums.FileType;
 import com.vitortenorio.descomplicando.exception.BusinessException;
-import com.vitortenorio.descomplicando.filemanager.util.ObjectMapperAbstract;
+import com.vitortenorio.descomplicando.infrastructure.filemanager.util.ObjectMapperAbstract;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
