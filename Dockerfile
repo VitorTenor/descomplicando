@@ -2,17 +2,7 @@ FROM eclipse-temurin:21.0.1_12-jre-alpine
 
 WORKDIR /app
 
-COPY app/pom.xml .
+COPY app/target/descomplicando-app.jar /app/descomplicando-app.jar
+COPY domain/target/descomplicando-domain.jar /app/descomplicando-domain.jar
 
-COPY app/src ./src
-
-COPY domain ./domain
-
-RUN apk add --no-cache maven
-
-RUN mvn clean install -DskipTests
-
-COPY app/target/app-0.0.1-SNAPSHOT.jar ./app.jar
-COPY domain/target/domain-0.0.1-SNAPSHOT.jar ./domain.jar
-
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","/app/descomplicando.jar"]
