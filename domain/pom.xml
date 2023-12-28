@@ -21,4 +21,7 @@
             <version>1</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>descomplicando-domain</finalName>
+    </build>
 </project>
